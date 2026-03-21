@@ -1,0 +1,10 @@
+# Secret keys — NEVER commit these
+.env
+
+# Output files
+x_cookies.json
+
+# Python
+__pycache__/
+*.pyc
+.DS_Store

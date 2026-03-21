@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-03-21T21:43:35.465295",
+  "total_scraped": 50,
+  "rescue_requests": 5,
+  "data": [
+    {
+      "text": "Unfortunately, no one cares about us anymore. I say it frankly, we are hungry and we need food. \n\nIf you’re scrolling, PLEASE leave a dot . it's just a dot.\n\n\nhttps://\nchuffed.org/project/157424\n-help-malak-save-starved-souls\n…",
+      "timestamp": "2026-03-21T19:41:04.000Z",
+      "query_used": "(غزة OR Gaza) (نحتاج OR بحاجة OR \"need food\" OR \"need water\" OR \"medical help\" OR \"مساعدة طبية\" OR طعام OR ماء OR مياه OR طبي) -is:retweet",
+      "scraped_at": "2026-03-21T21:41:40.809997",
+      "index": 10,
+      "is_rescue_request": true,
+      "urgency": "critical",
+      "needs": [
+        "food"
+      ],
+      "location_mentions": [],
+      "language": "en",
+      "summary": "The tweet expresses a desperate plea for food, stating that 'we are hungry' and asking for help, while also linking to a crowdfunding project."
+    },
+    {
+      "text": " PLEASE DONATE TO AZHAR \n\nShe needs your help please do so by donating if you can thank you \n\nPLEASE REPOST THIS SO THIS CAN REACH MORE PEOPLE\n\n\nhttps://\ngofundme.com/f/helping-s-az\nhar-family-for-the-basic-human-needs\n…\n\n#Palestine  #gazanation  #GazaGenocide‌ \n\n(Please help them.)",
+      "timestamp": "2026-03-21T21:38:01.000Z",
+      "query_used": "(غزة OR Gaza) (SOS OR استغاثة OR \"نداء استغاثة\" OR عاجل OR \"please help\" OR \"urgent help\" OR ساعدونا) -is:retweet",
+      "scraped_at": "2026-03-21T21:41:58.030545",
+      "index": 4,
+      "is_rescue_request": true,
+      "urgency": "critical",
+      "needs": [
+        "financial_aid",
+        "basic_needs"
+      ],
+      "location_mentions": [
+        "Palestine",
+        "Gaza"
+      ],
+      "language": "en",
+      "summary": "An urgent plea for donations and reposts to help Azhar and her family with basic human needs via a GoFundMe campaign."
+    },
+    {
+      "text": "Boosting \nA disabled Gazan kid needs a wheelchair  !! Please help her mother to raise the funds for it !!! Share & donate to her survival campaign !!!",
+      "timestamp": "2026-03-21T21:37:40.000Z",
+      "query_used": "(غزة OR Gaza) (SOS OR استغاثة OR \"نداء استغاثة\" OR عاجل OR \"please help\" OR \"urgent help\" OR ساعدونا) -is:retweet",
+      "scraped_at": "2026-03-21T21:41:58.033977",
+      "index": 5,
+      "is_rescue_request": true,
+      "urgency": "critical",
+      "needs": [
+        "medical_equipment",
+        "financial_aid"
+      ],
+      "location_mentions": [
+        "Gaza"
+      ],
+      "language": "en",
+      "summary": "An appeal to boost, share, and donate to a campaign to raise funds for a wheelchair for a disabled Gazan child's survival."
+    },
+    {
+      "text": "Please help a father keep his little girl alive. \n",
+      "timestamp": "2026-03-21T21:35:44.000Z",
+      "query_used": "(غزة OR Gaza) (SOS OR استغاثة OR \"نداء استغاثة\" OR عاجل OR \"please help\" OR \"urgent help\" OR ساعدونا) -is:retweet",
+      "scraped_at": "2026-03-21T21:41:58.043616",
+      "index": 7,
+      "is_rescue_request": true,
+      "urgency": "critical",
+      "needs": [
+        "unspecified_aid"
+      ],
+      "location_mentions": [],
+      "language": "en",
+      "summary": "A plea for help to assist a father in keeping his little girl alive."
+    },
+    {
+      "text": "Hello my friends,how are you? Happy Eid! I'm very sad,my friends. My father and brother are in very bad condition they are in a lot of pain. Please, my friends, help me buy medicine for my father and brother,and please help me buy food as well.Please \nhttps://\nchuffed.org/project/137192\n-help-muhammad-survive-the-gaza-genocide\n…",
+      "timestamp": "2026-03-21T21:16:28.000Z",
+      "query_used": "(غزة OR Gaza) (SOS OR استغاثة OR \"نداء استغاثة\" OR عاجل OR \"please help\" OR \"urgent help\" OR ساعدونا) -is:retweet",
+      "scraped_at": "2026-03-21T21:42:00.097591",
+      "index": 9,
+      "is_rescue_request": true,
+      "urgency": "critical",
+      "needs": [
+        "medical",
+        "food",
+        "financial_aid"
+      ],
+      "location_mentions": [
+        "Gaza"
+      ],
+      "language": "en",
+      "summary": "A personal plea for help to buy medicine for a father and brother in severe pain and bad condition, and also for food, linking to a survival campaign related to the Gaza genocide."
+    }
+  ]
+}
