@@ -1,6 +1,18 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { useLanguageStore } from "@/lib/language-store";
+import { t } from "@/lib/translations";
+import type { LangCode } from "@/lib/region-types";
 
 export type SiteHeaderNavItem = { href: string; label: string };
 
@@ -9,7 +21,16 @@ interface SiteHeaderProps {
   className?: string;
 }
 
+const LANG_LABELS: Record<LangCode, string> = {
+  en: "English",
+  ar: "العربية",
+  uk: "Українська",
+};
+
 export function SiteHeader({ navItems, className }: SiteHeaderProps) {
+  const { lang, setLang, availableLangs } = useLanguageStore();
+  const langs = availableLangs();
+
   return (
     <header
       className={cn(
@@ -32,9 +53,21 @@ export function SiteHeader({ navItems, className }: SiteHeaderProps) {
               </Button>
             </Link>
           ))}
+          <Select value={lang} onValueChange={(v) => setLang(v as LangCode)}>
+            <SelectTrigger className="w-[100px] sm:w-[110px] h-9 shrink-0" aria-label={t(lang, "selectLanguage")}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {langs.map((code) => (
+                <SelectItem key={code} value={code}>
+                  {LANG_LABELS[code] ?? code}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
           <Link href="/dashboard" className="shrink-0">
             <Button variant="outline" size="sm">
-              Organizer Map
+              {t(lang, "organizerMap")}
             </Button>
           </Link>
         </nav>

@@ -1,18 +1,26 @@
+"use client";
+
 import { AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguageStore } from "@/lib/language-store";
+import { t } from "@/lib/translations";
+import type { TranslationKey } from "@/lib/translations";
 
 interface SafetyNoticeProps {
   text?: string;
+  textKey?: TranslationKey;
   className?: string;
 }
 
-const DEFAULT_TEXT =
-  "Assignments should be reviewed by organizers. Do not enter unsafe zones without authorization or training.";
-
 export function SafetyNotice({
-  text = DEFAULT_TEXT,
+  text,
+  textKey,
   className,
 }: SafetyNoticeProps) {
+  const { lang } = useLanguageStore();
+  const displayText =
+    text ?? (textKey ? t(lang, textKey) : t(lang, "safetyNoticeDefault"));
+
   return (
     <div
       className={cn(
@@ -21,7 +29,7 @@ export function SafetyNotice({
       )}
     >
       <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5" />
-      <p className="text-sm font-medium">{text}</p>
+      <p className="text-sm font-medium">{displayText}</p>
     </div>
   );
 }

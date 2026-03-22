@@ -11,12 +11,15 @@ import {
   getTimeUrgencyTier,
   TIME_URGENCY_META,
 } from "@/lib/time-urgency";
+import { useLanguageStore } from "@/lib/language-store";
+import { t } from "@/lib/translations";
 import type { Incident, IncidentReport } from "@prisma/client";
 
 type IncidentWithReports = Incident & { reports: IncidentReport[] };
 
 export default function IncidentReportDetailPage() {
   const params = useParams();
+  const { lang } = useLanguageStore();
   const id = params.id as string;
   const [data, setData] = useState<IncidentWithReports | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -36,14 +39,14 @@ export default function IncidentReportDetailPage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader
         navItems={[
-          { href: "/", label: "Home" },
-          { href: "/map", label: "Crisis Map" },
+          { href: "/", label: t(lang, "home") },
+          { href: "/map", label: t(lang, "crisisMap") },
         ]}
       />
 
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-8">
         <Button variant="ghost" size="sm" className="mb-6 -ml-2" asChild>
-          <Link href="/map">← Back to map</Link>
+          <Link href="/map">{t(lang, "backToMap")}</Link>
         </Button>
 
         {error && (
@@ -71,26 +74,26 @@ export default function IncidentReportDetailPage() {
 
             <section className="rounded-lg border bg-card p-4 text-sm space-y-3">
               <div>
-                <p className="font-medium text-muted-foreground">Location</p>
+                <p className="font-medium text-muted-foreground">{t(lang, "location")}</p>
                 <p>{data.locationName}</p>
               </div>
               <div>
-                <p className="font-medium text-muted-foreground">Reported at</p>
+                <p className="font-medium text-muted-foreground">{t(lang, "reportedAt")}</p>
                 <p>{new Date(data.reportedAt).toLocaleString()}</p>
               </div>
               <div>
-                <p className="font-medium text-muted-foreground">Injuries (reported estimate)</p>
+                <p className="font-medium text-muted-foreground">{t(lang, "injuriesReported")}</p>
                 <p>{(data as Incident & { injuriesReported?: number }).injuriesReported ?? 0}</p>
               </div>
               {data.description && (
                 <div>
-                  <p className="font-medium text-muted-foreground">Situation summary</p>
+                  <p className="font-medium text-muted-foreground">{t(lang, "situationSummary")}</p>
                   <p className="whitespace-pre-wrap pt-1">{data.description}</p>
                 </div>
               )}
               {data.sourceText && data.sourceText !== data.description && (
                 <div>
-                  <p className="font-medium text-muted-foreground">Source excerpt</p>
+                  <p className="font-medium text-muted-foreground">{t(lang, "sourceExcerpt")}</p>
                   <p className="whitespace-pre-wrap pt-1 text-muted-foreground">
                     {data.sourceText}
                   </p>
@@ -99,10 +102,10 @@ export default function IncidentReportDetailPage() {
             </section>
 
             <section>
-              <h2 className="mb-3 text-lg font-semibold">Recent inbound reports</h2>
+              <h2 className="mb-3 text-lg font-semibold">{t(lang, "recentReports")}</h2>
               {data.reports.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
-                  No linked social or field reports in the database yet.
+                  {t(lang, "noReportsYet")}
                 </p>
               ) : (
                 <ul className="space-y-3">
@@ -124,7 +127,7 @@ export default function IncidentReportDetailPage() {
             </section>
 
             <div className="rounded-xl border bg-muted/30 px-4 py-3 text-sm">
-              <span className="text-muted-foreground">Offer to help: </span>
+              <span className="text-muted-foreground">{t(lang, "offerToHelp")}: </span>
               <a
                 href="tel:02-2929984"
                 className="font-medium text-primary hover:underline"

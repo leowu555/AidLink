@@ -8,10 +8,13 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { SafetyNotice } from "@/components/SafetyNotice";
 import { VolunteerForm } from "@/components/VolunteerForm";
 import { IncidentCard } from "@/components/IncidentCard";
+import { useLanguageStore } from "@/lib/language-store";
+import { t } from "@/lib/translations";
 import type { Incident } from "@prisma/client";
 
 function VolunteerContent() {
   const searchParams = useSearchParams();
+  const { lang } = useLanguageStore();
   const incidentId = searchParams.get("incident");
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [counts, setCounts] = useState<Record<string, { i: number; c: number; ch: number }>>({});
@@ -50,36 +53,33 @@ function VolunteerContent() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <SiteHeader navItems={[{ href: "/map", label: "Crisis Map" }]} />
+      <SiteHeader navItems={[{ href: "/map", label: t(lang, "crisisMap") }]} />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 sm:py-12">
         <div className="w-full max-w-4xl">
-          <h1 className="text-2xl font-bold mb-2">Volunteer</h1>
+          <h1 className="text-2xl font-bold mb-2">{t(lang, "volunteer")}</h1>
           <p className="text-muted-foreground mb-6">
-            Create your profile and offer to help at an incident. An organizer will review and may confirm your assignment.
+            {t(lang, "volunteerSubtitle")}
           </p>
 
-          <SafetyNotice
-            text="Interested does not mean assigned. An organizer may review and confirm you. Do not enter unsafe zones without authorization."
-            className="mb-8"
-          />
+          <SafetyNotice textKey="safetyNoticeVolunteer" className="mb-8" />
 
           {!profileCreated ? (
             <VolunteerForm onSuccess={handleProfileCreated} />
           ) : (
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Your Profile</CardTitle>
+                <CardTitle>{t(lang, "yourProfile")}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Profile created. You can now offer to help at incidents below.
+                  {t(lang, "profileCreatedHint")}
                 </p>
               </CardContent>
             </Card>
           )}
 
-          <h2 className="text-lg font-semibold mb-4">Open Incidents</h2>
+          <h2 className="text-lg font-semibold mb-4">{t(lang, "openIncidents")}</h2>
           <div className="grid gap-4">
             {publicIncidents.map((inc) => (
               <IncidentCard
@@ -95,7 +95,7 @@ function VolunteerContent() {
                       onClick={() => handleOfferHelp(inc.id)}
                       disabled={!profileCreated}
                     >
-                      Offer to Help
+                      {t(lang, "offerToHelp")}
                     </Button>
                   )
                 }

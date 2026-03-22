@@ -13,16 +13,20 @@ import {
   mapToDisplay,
 } from "@/lib/incident-feed-utils";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
+import type { LangCode } from "@/lib/region-types";
+import { t, getCriticalityLabel } from "@/lib/translations";
 
 interface OpenIncidentsPanelProps {
   onSelectIncident?: (id: string) => void;
   /** Map incidents (preferred - ensures zoom works). Falls back to fetch when empty. */
   mapIncidents?: MapIncident[];
+  lang?: LangCode;
 }
 
 export function OpenIncidentsPanel({
   onSelectIncident,
   mapIncidents = [],
+  lang = "en",
 }: OpenIncidentsPanelProps) {
   const [incidents, setIncidents] = useState<DisplayIncident[]>([]);
   const [counts, setCounts] = useState<
@@ -74,7 +78,7 @@ export function OpenIncidentsPanel({
     return (
       <div className="absolute left-4 top-36 z-[1000] max-w-[280px] max-h-[50vh] flex flex-col rounded-xl border bg-background/95 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80 overflow-hidden">
         <div className="flex shrink-0 items-center justify-between gap-2 border-b px-3 py-2">
-          <h2 className="font-semibold text-sm">Open Incidents</h2>
+          <h2 className="font-semibold text-sm">{t(lang, "openIncidents")}</h2>
           <Button
             variant="ghost"
             size="icon"
@@ -88,7 +92,7 @@ export function OpenIncidentsPanel({
         <div className="overflow-y-auto p-2 min-h-0" style={{ maxHeight: "calc(50vh - 44px)" }}>
           {incidents.length === 0 ? (
             <p className="py-6 text-center text-sm text-muted-foreground">
-              No open incidents
+              {t(lang, "noOpenIncidents")}
             </p>
           ) : (
             <div className="space-y-2">
@@ -114,28 +118,28 @@ export function OpenIncidentsPanel({
 
   return (
     <div className="absolute left-4 top-36 z-[1000] max-w-[280px] rounded-xl border bg-background/95 p-4 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80 transition-shadow hover:shadow-xl">
-      <p className="font-medium text-sm">Criticality (by time since incident)</p>
+      <p className="font-medium text-sm">{t(lang, "criticality")}</p>
       <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
         <span className="flex items-center gap-1.5 whitespace-nowrap text-sm">
           <span
             className="h-2.5 w-2.5 shrink-0 rounded-full"
             style={{ background: CRITICALITY_META.critical.marker }}
           />
-          Critical
+          {getCriticalityLabel(lang, "critical")}
         </span>
         <span className="flex items-center gap-1.5 whitespace-nowrap text-sm">
           <span
             className="h-2.5 w-2.5 shrink-0 rounded-full"
             style={{ background: CRITICALITY_META["needs support"].marker }}
           />
-          Needs Support
+          {getCriticalityLabel(lang, "needs support")}
         </span>
         <span className="flex items-center gap-1.5 whitespace-nowrap text-sm">
           <span
             className="h-2.5 w-2.5 shrink-0 rounded-full"
             style={{ background: CRITICALITY_META.cleanup.marker }}
           />
-          Clean Up
+          {getCriticalityLabel(lang, "cleanup")}
         </span>
       </div>
       <Button
@@ -145,7 +149,7 @@ export function OpenIncidentsPanel({
         onClick={() => setExpanded(true)}
       >
         <List className="h-4 w-4" />
-        Open Incidents
+        {t(lang, "openIncidents")}
         <ChevronRight className="h-4 w-4 opacity-70" />
       </Button>
     </div>

@@ -8,12 +8,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SKILLS } from "@/types";
+import { useLanguageStore } from "@/lib/language-store";
+import { t } from "@/lib/translations";
 
 const schema = z.object({
   fullName: z.string().min(2),
   email: z.string().email(),
   phone: z.string().optional(),
-  skills: z.array(z.string()).min(1, "Select at least one skill"),
+  skills: z.array(z.string()).min(1),
   hasVehicle: z.boolean(),
   availableNow: z.boolean(),
   travelRadius: z.number().min(5).max(500),
@@ -26,6 +28,7 @@ interface VolunteerFormProps {
 }
 
 export function VolunteerForm({ onSuccess }: VolunteerFormProps) {
+  const { lang } = useLanguageStore();
   const {
     register,
     handleSubmit,
@@ -70,33 +73,33 @@ export function VolunteerForm({ onSuccess }: VolunteerFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Create Volunteer Profile</CardTitle>
+        <CardTitle>{t(lang, "createVolunteerProfile")}</CardTitle>
         <p className="text-sm text-muted-foreground">
-          Your information helps organizers match you with the right tasks.
+          {t(lang, "createVolunteerHint")}
         </p>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <Label htmlFor="fullName">Full Name</Label>
+            <Label htmlFor="fullName">{t(lang, "fullName")}</Label>
             <Input id="fullName" {...register("fullName")} className="mt-1" />
             {errors.fullName && (
               <p className="text-sm text-destructive mt-0.5">{errors.fullName.message}</p>
             )}
           </div>
           <div>
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t(lang, "email")}</Label>
             <Input id="email" type="email" {...register("email")} className="mt-1" />
             {errors.email && (
               <p className="text-sm text-destructive mt-0.5">{errors.email.message}</p>
             )}
           </div>
           <div>
-            <Label htmlFor="phone">Phone (optional)</Label>
+            <Label htmlFor="phone">{t(lang, "phoneOptional")}</Label>
             <Input id="phone" {...register("phone")} className="mt-1" />
           </div>
           <div>
-            <Label>Skills (select at least one)</Label>
+            <Label>{t(lang, "skills")} ({t(lang, "skillsHint")})</Label>
             <div className="flex flex-wrap gap-2 mt-2">
               {SKILLS.map((s) => (
                 <button
@@ -124,7 +127,7 @@ export function VolunteerForm({ onSuccess }: VolunteerFormProps) {
                 {...register("hasVehicle")}
                 className="rounded border"
               />
-              <span className="text-sm">Has vehicle</span>
+              <span className="text-sm">{t(lang, "hasVehicle")}</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -132,11 +135,11 @@ export function VolunteerForm({ onSuccess }: VolunteerFormProps) {
                 {...register("availableNow")}
                 className="rounded border"
               />
-              <span className="text-sm">Available now</span>
+              <span className="text-sm">{t(lang, "availableNow")}</span>
             </label>
           </div>
           <div>
-            <Label htmlFor="travelRadius">Can travel (km)</Label>
+            <Label htmlFor="travelRadius">{t(lang, "canTravelKm")}</Label>
             <Input
               id="travelRadius"
               type="number"
@@ -148,7 +151,7 @@ export function VolunteerForm({ onSuccess }: VolunteerFormProps) {
             )}
           </div>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Creating..." : "Create Profile"}
+            {isSubmitting ? t(lang, "creating") : t(lang, "createProfile")}
           </Button>
         </form>
       </CardContent>

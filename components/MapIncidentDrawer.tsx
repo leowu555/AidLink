@@ -4,12 +4,14 @@ import { Button } from "@/components/ui/button";
 import { X, ExternalLink, Trash2 } from "lucide-react";
 import type { MapIncident } from "@/types/incident-json";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
+import { useLanguageStore } from "@/lib/language-store";
+import { t, getCriticalityLabel, type TranslationKey } from "@/lib/translations";
 import { cn } from "@/lib/utils";
 
-const VERIFICATION_LABELS: Record<string, string> = {
-  initial_reports: "Initial reports",
-  confident: "Confident",
-  verified: "Verified",
+const VERIFICATION_KEYS: Record<string, "verificationInitial" | "verificationConfident" | "verificationVerified"> = {
+  initial_reports: "verificationInitial",
+  confident: "verificationConfident",
+  verified: "verificationVerified",
 };
 
 interface MapIncidentDrawerProps {
@@ -20,6 +22,7 @@ interface MapIncidentDrawerProps {
 }
 
 export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDrawerProps) {
+  const { lang } = useLanguageStore();
   const meta = CRITICALITY_META[incident.criticality];
 
   return (
@@ -42,50 +45,50 @@ export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDr
             className="rounded-md border px-2 py-1 text-xs font-medium"
             style={{ borderColor: meta.stroke, color: meta.stroke }}
           >
-            {meta.label}
+            {getCriticalityLabel(lang, incident.criticality)}
           </span>
           <span className="rounded-md border border-border px-2 py-1 text-xs font-medium text-muted-foreground">
-            {VERIFICATION_LABELS[incident.verification] ?? incident.verification}
+            {t(lang, (VERIFICATION_KEYS[incident.verification] ?? "verificationInitial") as TranslationKey)}
           </span>
         </div>
 
         {incident.summary && (
           <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
-            <p className="font-medium text-muted-foreground">Summary</p>
+            <p className="font-medium text-muted-foreground">{t(lang, "summary")}</p>
             <p className="mt-1">{incident.summary}</p>
           </div>
         )}
 
         <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
-          <p className="font-medium text-muted-foreground">Time of incident</p>
+          <p className="font-medium text-muted-foreground">{t(lang, "timeOfIncident")}</p>
           <p className="font-medium">{new Date(incident.reportedAt).toLocaleString()}</p>
           {incident.timeSince && (
             <p className="mt-1 text-xs text-muted-foreground">
-              {incident.timeSince} since incident
+              {incident.timeSince} {t(lang, "sinceIncident")}
             </p>
           )}
         </div>
 
         <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
-          <p className="font-medium text-muted-foreground">Location</p>
+          <p className="font-medium text-muted-foreground">{t(lang, "location")}</p>
           <p className="font-medium">
             {incident.lat.toFixed(4)}, {incident.lng.toFixed(4)}
           </p>
           {incident.radiusKm != null && incident.radiusKm > 0 && (
             <p className="mt-1 text-xs text-muted-foreground">
-              ~{incident.radiusKm} km radius (triangulated)
+              {t(lang, "radiusTriangulated", { n: String(incident.radiusKm) })}
             </p>
           )}
         </div>
 
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
-            <p className="text-muted-foreground">Casualties (est.)</p>
+            <p className="text-muted-foreground">{t(lang, "casualtiesEst")}</p>
             <p className="text-lg font-semibold">{incident.casualtiesEstimate}</p>
             <p className="text-xs text-muted-foreground capitalize">{incident.casualtiesCategory}</p>
           </div>
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
-            <p className="text-muted-foreground">Manpower needed</p>
+            <p className="text-muted-foreground">{t(lang, "manpowerNeeded")}</p>
             <p className="text-lg font-semibold">{incident.manpowerEstimate}</p>
             <p className="text-xs text-muted-foreground capitalize">{incident.manpowerCategory}</p>
           </div>
@@ -93,7 +96,7 @@ export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDr
 
         {incident.media.length > 0 && (
           <div>
-            <p className="mb-2 text-sm font-medium text-muted-foreground">Media</p>
+            <p className="mb-2 text-sm font-medium text-muted-foreground">{t(lang, "media")}</p>
             <div className="grid grid-cols-2 gap-2">
               {incident.media
                 .filter((m) => m.type === "image")
@@ -119,7 +122,7 @@ export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDr
 
         {incident.posts.length > 0 && (
           <div>
-            <p className="mb-2 text-sm font-medium text-muted-foreground">Source posts</p>
+            <p className="mb-2 text-sm font-medium text-muted-foreground">{t(lang, "sourcePosts")}</p>
             <ul className="space-y-2">
               {incident.posts.slice(0, 5).map((url, i) => (
                 <li key={i}>
@@ -144,7 +147,7 @@ export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDr
         )}
 
         <div className="rounded-xl border bg-muted/30 px-4 py-3 text-sm">
-          <span className="text-muted-foreground">Offer to help: </span>
+          <span className="text-muted-foreground">{t(lang, "offerToHelp")}: </span>
           <a
             href="tel:02-2929984"
             className="font-medium text-primary hover:underline"
@@ -161,7 +164,7 @@ export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDr
               onClick={() => onRemove(incident.id)}
             >
               <Trash2 className="h-4 w-4" />
-              Remove Incident
+              {t(lang, "removeIncident")}
             </Button>
           </div>
         )}
