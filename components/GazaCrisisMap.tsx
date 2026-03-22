@@ -233,7 +233,7 @@ export function GazaCrisisMap({
                     >
                       <p className="font-semibold text-sm">{inc.title}</p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {meta.label} • {inc.casualtiesEstimate} casualties est.
+                        {meta.label} • {inc.casualtiesEstimate === 0 ? "None" : inc.casualtiesEstimate} casualties est.
                       </p>
                       <button
                         type="button"

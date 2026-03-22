@@ -3,19 +3,13 @@
 import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, Trash2, Pencil, ChevronDown } from "lucide-react";
+import { X, Trash2, Pencil } from "lucide-react";
 import type { Incident } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
@@ -155,7 +149,6 @@ export function OrganizerIncidentDrawer({
   const currentVerification = incident.verificationStatus ?? "UNVERIFIED";
   const verificationStyle =
     VERIFICATION_STYLES[currentVerification] ?? VERIFICATION_STYLES.UNVERIFIED;
-  const currentLabel = VERIFICATION_OPTIONS.find((o) => o.value === currentVerification)?.label ?? "Initial";
 
   const handleEdit = () => onEdit?.(incident);
   const summarySave = onSummarySave ?? (onUpdate ? (id: string, s: string) => onUpdate(id, { description: s }) : undefined);
@@ -260,32 +253,26 @@ export function OrganizerIncidentDrawer({
               {meta.label}
             </span>
           )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className={cn(
-                  "h-9 gap-1.5 font-semibold px-2.5 rounded-md cursor-pointer",
-                  verificationStyle
-                )}
-              >
-                {currentLabel}
-                <ChevronDown className="h-4 w-4 opacity-70" aria-hidden />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="z-[9999]">
+          <Select
+            value={currentVerification}
+            onValueChange={(v) => onVerificationChange(incident.id, v)}
+          >
+            <SelectTrigger
+              className={cn(
+                "h-9 w-[130px] font-semibold px-2.5 text-xs",
+                verificationStyle
+              )}
+            >
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="z-[9999]" position="popper">
               {VERIFICATION_OPTIONS.map((o) => (
-                <DropdownMenuItem
-                  key={o.value}
-                  onClick={() => onVerificationChange(incident.id, o.value)}
-                  className={cn("cursor-pointer", o.style)}
-                >
+                <SelectItem key={o.value} value={o.value}>
                   {o.label}
-                </DropdownMenuItem>
+                </SelectItem>
               ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -397,7 +384,9 @@ export function OrganizerIncidentDrawer({
                 className="mt-1 w-full rounded-md border border-input bg-background px-2 py-1 text-lg font-semibold"
               />
             ) : (
-              <p className="text-lg font-semibold">{incident.injuriesReported}</p>
+              <p className="text-lg font-semibold">
+                {incident.injuriesReported === 0 ? "None" : incident.injuriesReported}
+              </p>
             )}
           </div>
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">

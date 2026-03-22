@@ -463,7 +463,26 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
                     });
                     fetchDashboard();
                   }
-                : undefined
+                : async (incidentId, updates) => {
+                    setJsonFallbackIncidents((prev) =>
+                      prev.map((i) => {
+                        if (i.id !== incidentId) return i;
+                        const next = { ...i };
+                        if (updates.verification != null) next.verification = updates.verification as "initial_reports" | "confident" | "verified";
+                        if (updates.summary != null) next.summary = updates.summary;
+                        if (updates.reportedAt != null) next.reportedAt = updates.reportedAt;
+                        if (updates.lat != null) next.lat = updates.lat;
+                        if (updates.lng != null) next.lng = updates.lng;
+                        if (updates.radiusKm != null) next.radiusKm = updates.radiusKm;
+                        if (updates.casualtiesEstimate != null) next.casualtiesEstimate = updates.casualtiesEstimate;
+                        if (updates.casualtiesCategory != null) next.casualtiesCategory = updates.casualtiesCategory;
+                        if (updates.manpowerEstimate != null) next.manpowerEstimate = updates.manpowerEstimate;
+                        if (updates.manpowerCategory != null) next.manpowerCategory = updates.manpowerCategory;
+                        if (updates.criticality != null) next.criticality = updates.criticality;
+                        return next;
+                      })
+                    );
+                  }
             }
           />
         )}

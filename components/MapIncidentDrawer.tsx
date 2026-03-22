@@ -9,13 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { X, ExternalLink, Trash2, ChevronDown } from "lucide-react";
+import { X, ExternalLink, Trash2 } from "lucide-react";
 import type { MapIncident, CriticalityTier, CasualtiesCategory, ManpowerCategory } from "@/types/incident-json";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
 import { useLanguageStore } from "@/lib/language-store";
@@ -196,35 +190,29 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
                 </SelectContent>
               </Select>
               {onUpdate ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className={cn(
-                        "h-9 gap-1.5 font-semibold px-2.5",
-                        VERIFICATION_STYLES[verificationDraft] ?? VERIFICATION_STYLES.initial_reports
-                      )}
-                    >
-                      {t(lang, (VERIFICATION_KEYS[verificationDraft] ?? "verificationInitial") as TranslationKey)}
-                      <ChevronDown className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="z-[9999]">
+                <Select
+                  value={verificationDraft}
+                  onValueChange={(v) => {
+                    setVerificationDraft(v);
+                    onUpdate(incident.id, { verification: v });
+                  }}
+                >
+                  <SelectTrigger
+                    className={cn(
+                      "h-9 w-[130px] font-semibold px-2.5 text-xs",
+                      VERIFICATION_STYLES[verificationDraft] ?? VERIFICATION_STYLES.initial_reports
+                    )}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="z-[9999]" position="popper">
                     {VERIFICATION_OPTIONS.map((o) => (
-                      <DropdownMenuItem
-                        key={o.value}
-                        onClick={() => {
-                          setVerificationDraft(o.value);
-                          onUpdate(incident.id, { verification: o.value });
-                        }}
-                        className={cn("cursor-pointer", o.style)}
-                      >
+                      <SelectItem key={o.value} value={o.value}>
                         {t(lang, o.labelKey)}
-                      </DropdownMenuItem>
+                      </SelectItem>
                     ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                  </SelectContent>
+                </Select>
               ) : (
                 <span
                   className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
@@ -382,8 +370,12 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
               </div>
             ) : (
               <>
-                <p className="text-lg font-semibold">{incident.casualtiesEstimate}</p>
-                <p className="text-xs text-muted-foreground capitalize">{incident.casualtiesCategory}</p>
+                <p className="text-lg font-semibold">
+                  {incident.casualtiesEstimate === 0 ? t(lang, "none") : incident.casualtiesEstimate}
+                </p>
+                <p className="text-xs text-muted-foreground capitalize">
+                  {incident.casualtiesEstimate === 0 ? "" : incident.casualtiesCategory}
+                </p>
               </>
             )}
           </div>

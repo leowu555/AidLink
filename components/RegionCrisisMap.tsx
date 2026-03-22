@@ -255,7 +255,7 @@ export function RegionCrisisMap({
                   >
                     <p className="font-semibold text-sm">{inc.title}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {getCriticalityLabel(lang, inc.criticality)} • {inc.casualtiesEstimate} {t(lang, "casualtiesEst")}
+                      {getCriticalityLabel(lang, inc.criticality)} • {inc.casualtiesEstimate === 0 ? t(lang, "none") : `${inc.casualtiesEstimate} ${t(lang, "casualtiesEst")}`}
                     </p>
                     <button
                       type="button"

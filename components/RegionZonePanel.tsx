@@ -73,7 +73,7 @@ export function RegionZonePanel({
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">{t(lang, "casualtiesEst")}</p>
-            <p className="text-lg font-semibold">{casualtiesTotal}</p>
+            <p className="text-lg font-semibold">{casualtiesTotal === 0 ? t(lang, "none") : casualtiesTotal}</p>
           </div>
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">{t(lang, "manpowerNeeded")}</p>
@@ -112,7 +112,7 @@ export function RegionZonePanel({
                     >
                       <span className="font-medium">{inc.title}</span>
                       <span className="mt-1 text-xs text-muted-foreground">
-                        {inc.casualtiesEstimate} {t(lang, "casualtiesEst")} ·{" "}
+                        {inc.casualtiesEstimate === 0 ? t(lang, "none") : `${inc.casualtiesEstimate} ${t(lang, "casualtiesEst")}`} ·{" "}
                         <span style={{ color: m.fill }}>{getCriticalityLabel(lang, inc.criticality)}</span>
                       </span>
                     </button>

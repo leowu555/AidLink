@@ -96,7 +96,8 @@ export type TranslationKey =
   | "additionalSupport"
   | "noRegionReport"
   | "backToOrganizerMap"
-  | "lastUpdated";
+  | "lastUpdated"
+  | "none";
 
 const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
   en: {
@@ -204,6 +205,7 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     noRegionReport: "No region report available.",
     backToOrganizerMap: "Back to Organizer Map",
     lastUpdated: "Last updated",
+    none: "None",
   },
   ar: {
     viewCrisisMap: "عرض خريطة الأزمات",
@@ -310,6 +312,7 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     noRegionReport: "لا يوجد تقرير للمنطقة.",
     backToOrganizerMap: "العودة لخريطة المنظمين",
     lastUpdated: "آخر تحديث",
+    none: "لا شيء",
   },
   uk: {
     viewCrisisMap: "Переглянути карту кризи",
@@ -416,6 +419,7 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     noRegionReport: "Звіт по регіону відсутній.",
     backToOrganizerMap: "Назад до карти організаторів",
     lastUpdated: "Оновлено",
+    none: "Немає",
   },
 };
 

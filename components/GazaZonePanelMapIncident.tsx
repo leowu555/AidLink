@@ -65,7 +65,7 @@ export function GazaZonePanelMapIncident({
         <div className="grid grid-cols-2 gap-3 text-sm">
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">Casualties (est.)</p>
-            <p className="text-lg font-semibold">{casualtiesTotal}</p>
+            <p className="text-lg font-semibold">{casualtiesTotal === 0 ? "None" : casualtiesTotal}</p>
           </div>
           <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">Manpower needed</p>
@@ -100,7 +100,7 @@ export function GazaZonePanelMapIncident({
                     >
                       <span className="font-medium">{inc.title}</span>
                       <span className="mt-1 text-xs text-muted-foreground">
-                        {inc.casualtiesEstimate} casualties est. ·{" "}
+                        {inc.casualtiesEstimate === 0 ? "None" : inc.casualtiesEstimate} casualties est. ·{" "}
                         <span style={{ color: m.fill }}>{m.label}</span>
                       </span>
                     </button>
