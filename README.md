@@ -1,6 +1,6 @@
 # AidLink — Crisis Response Coordination Platform
 
-A hackathon MVP for coordinating relief during emergencies. It helps local organizers triage reports, verify incidents, and assign volunteers—focused on a **Gaza-area crisis map** with optional JSON-backed incident data and a SQLite database for organizer workflows.
+A hackathon MVP for coordinating relief during emergencies. AidLink helps local organizers triage reports, verify incidents, and assign volunteers—focused on a **Gaza-area crisis map** with optional JSON-backed incident data and a SQLite database for organizer workflows.
 
 ## Features
 
