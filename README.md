@@ -88,3 +88,7 @@ prisma/
 ## Safety Notice
 
 Assignments should be reviewed by organizers. Do not enter unsafe zones without authorization or training.
+
+
+## The Team
+Built by Jasper He, Leo Wu, Ethan Hoang, Daniel Zou
