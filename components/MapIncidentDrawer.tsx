@@ -2,6 +2,13 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { X, ExternalLink, Trash2 } from "lucide-react";
 import type { MapIncident, CriticalityTier, CasualtiesCategory, ManpowerCategory } from "@/types/incident-json";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
@@ -156,29 +163,33 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
         <div className="flex flex-wrap gap-2 pt-1">
           {isEditable ? (
             <>
-              <select
-                value={criticalityDraft}
-                onChange={(e) => setCriticalityDraft(e.target.value as CriticalityTier)}
-                className="rounded-md border px-2.5 py-1.5 text-xs font-semibold bg-background"
-                style={{ borderColor: CRITICALITY_META[criticalityDraft].stroke, color: CRITICALITY_META[criticalityDraft].stroke }}
-              >
-                {CRITICALITY_OPTIONS.map((c) => (
-                  <option key={c} value={c}>
-                    {getCriticalityLabel(lang, c)}
-                  </option>
-                ))}
-              </select>
-              <select
-                value={verificationDraft}
-                onChange={(e) => setVerificationDraft(e.target.value)}
-                className="rounded-md border border-border px-2.5 py-1.5 text-xs font-semibold bg-background"
-              >
-                {VERIFICATION_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {t(lang, o.labelKey)}
-                  </option>
-                ))}
-              </select>
+              <Select value={criticalityDraft} onValueChange={(v) => setCriticalityDraft(v as CriticalityTier)}>
+                <SelectTrigger
+                  className="h-9 w-[120px] border px-2.5 text-xs font-semibold"
+                  style={{ borderColor: CRITICALITY_META[criticalityDraft].stroke, color: CRITICALITY_META[criticalityDraft].stroke }}
+                >
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="z-[9999]">
+                  {CRITICALITY_OPTIONS.map((c) => (
+                    <SelectItem key={c} value={c}>
+                      {getCriticalityLabel(lang, c)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={verificationDraft} onValueChange={setVerificationDraft}>
+                <SelectTrigger className="h-9 w-[130px] border border-border px-2.5 text-xs font-semibold">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="z-[9999]">
+                  {VERIFICATION_OPTIONS.map((o) => (
+                    <SelectItem key={o.value} value={o.value}>
+                      {t(lang, o.labelKey)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </>
           ) : (
             <>
@@ -311,15 +322,16 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
                   onChange={(e) => setCasualtiesDraft(parseInt(e.target.value, 10) || 0)}
                   className="w-full rounded-md border border-input bg-background px-2 py-1 text-sm font-semibold"
                 />
-                <select
-                  value={casualtiesCatDraft}
-                  onChange={(e) => setCasualtiesCatDraft(e.target.value as CasualtiesCategory)}
-                  className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
-                >
-                  {CASUALTIES_OPTIONS.map((c) => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
+                <Select value={casualtiesCatDraft} onValueChange={(v) => setCasualtiesCatDraft(v as CasualtiesCategory)}>
+                  <SelectTrigger className="h-8 w-full px-2 py-1 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="z-[9999]">
+                    {CASUALTIES_OPTIONS.map((c) => (
+                      <SelectItem key={c} value={c}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             ) : (
               <>
@@ -339,15 +351,16 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
                   onChange={(e) => setManpowerDraft(parseInt(e.target.value, 10) || 0)}
                   className="w-full rounded-md border border-input bg-background px-2 py-1 text-sm font-semibold"
                 />
-                <select
-                  value={manpowerCatDraft}
-                  onChange={(e) => setManpowerCatDraft(e.target.value as ManpowerCategory)}
-                  className="w-full rounded-md border border-input bg-background px-2 py-1 text-xs"
-                >
-                  {MANPOWER_OPTIONS.map((m) => (
-                    <option key={m} value={m}>{m}</option>
-                  ))}
-                </select>
+                <Select value={manpowerCatDraft} onValueChange={(v) => setManpowerCatDraft(v as ManpowerCategory)}>
+                  <SelectTrigger className="h-8 w-full px-2 py-1 text-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="z-[9999]">
+                    {MANPOWER_OPTIONS.map((m) => (
+                      <SelectItem key={m} value={m}>{m}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             ) : (
               <>

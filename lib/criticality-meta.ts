@@ -12,7 +12,7 @@ export const CRITICALITY_META: Record<
     marker: "#ef4444",
   },
   "needs support": {
-    label: "Needs Support",
+    label: "Moderate",
     fill: "#eab308",
     stroke: "#ca8a04",
     marker: "#facc15",

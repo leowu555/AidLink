@@ -8,11 +8,19 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { X, Trash2, Pencil, ChevronDown } from "lucide-react";
 import type { Incident } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
 import { getTimeUrgencyTier } from "@/lib/time-urgency";
+import type { CriticalityTier } from "@/types/incident-json";
 
 const VERIFICATION_OPTIONS = [
   { value: "UNVERIFIED", label: "Initial", style: "border-red-300 bg-red-500/15 text-red-700" },
@@ -36,7 +44,14 @@ export type OrganizerIncidentUpdates = Partial<{
   volunteersNeeded: number;
   injuriesReported: number;
   verificationStatus: string;
+  urgencyLevel: string;
 }>;
+
+const CRITICALITY_OPTIONS = [
+  { value: "LOW", label: "Clean Up", tier: "cleanup" as const },
+  { value: "HIGH", label: "Moderate", tier: "needs support" as const },
+  { value: "CRITICAL", label: "Critical", tier: "critical" as const },
+];
 
 interface OrganizerIncidentDrawerProps {
   incident: Incident;
@@ -106,6 +121,23 @@ export function OrganizerIncidentDrawer({
   const [injuriesDraft, setInjuriesDraft] = useState<number>(incident.injuriesReported);
   const [isSaving, setIsSaving] = useState(false);
 
+  const tier = getTimeUrgencyTier(incident.reportedAt);
+  const derivedCriticality: CriticalityTier =
+    tier === "CRITICAL" ? "critical" : tier === "MODERATE" ? "needs support" : "cleanup";
+  const urgencyToCriticality: Record<string, CriticalityTier> = {
+    CRITICAL: "critical",
+    HIGH: "needs support",
+    LOW: "cleanup",
+  };
+  const criticalityFromUrgency = incident.urgencyLevel && urgencyToCriticality[incident.urgencyLevel];
+  const currentCriticality = criticalityFromUrgency ?? derivedCriticality;
+
+  const [criticalityDraft, setCriticalityDraft] = useState<string>(() => {
+    const u = incident.urgencyLevel;
+    if (u === "CRITICAL" || u === "HIGH" || u === "LOW") return u;
+    return currentCriticality === "critical" ? "CRITICAL" : currentCriticality === "needs support" ? "HIGH" : "LOW";
+  });
+
   useEffect(() => {
     setTitleDraft(incident.title);
     setSummaryDraft(incident.description ?? "");
@@ -115,15 +147,11 @@ export function OrganizerIncidentDrawer({
     setReportedAtDraft(incident.reportedAt ? new Date(incident.reportedAt).toISOString().slice(0, 16) : "");
     setVolunteersDraft(incident.volunteersNeeded);
     setInjuriesDraft(incident.injuriesReported);
-  }, [incident]);
-  const tier = getTimeUrgencyTier(incident.reportedAt);
-  const criticality =
-    tier === "CRITICAL"
-      ? "critical"
-      : tier === "MODERATE"
-        ? "needs support"
-        : "cleanup";
-  const meta = CRITICALITY_META[criticality];
+    const u = incident.urgencyLevel;
+    setCriticalityDraft(u === "CRITICAL" || u === "HIGH" || u === "LOW" ? u : derivedCriticality === "critical" ? "CRITICAL" : derivedCriticality === "needs support" ? "HIGH" : "LOW");
+  }, [incident, derivedCriticality]);
+
+  const meta = CRITICALITY_META[criticalityDraft === "CRITICAL" ? "critical" : criticalityDraft === "HIGH" ? "needs support" : "cleanup"];
   const currentVerification = incident.verificationStatus ?? "UNVERIFIED";
   const verificationStyle =
     VERIFICATION_STYLES[currentVerification] ?? VERIFICATION_STYLES.UNVERIFIED;
@@ -160,6 +188,9 @@ export function OrganizerIncidentDrawer({
     if (reportedAtVal && reportedAtVal !== incident.reportedAt.toISOString()) updates.reportedAt = reportedAtVal;
     if (volunteersDraft !== incident.volunteersNeeded) updates.volunteersNeeded = volunteersDraft;
     if (injuriesDraft !== incident.injuriesReported) updates.injuriesReported = injuriesDraft;
+    const currentUrgency = incident.urgencyLevel && ["CRITICAL", "HIGH", "LOW"].includes(incident.urgencyLevel) ? incident.urgencyLevel : null;
+    const derivedUrgency = derivedCriticality === "critical" ? "CRITICAL" : derivedCriticality === "needs support" ? "HIGH" : "LOW";
+    if (criticalityDraft !== (currentUrgency ?? derivedUrgency)) updates.urgencyLevel = criticalityDraft;
     if (Object.keys(updates).length === 0) return;
     setIsSaving(true);
     try {
@@ -178,6 +209,8 @@ export function OrganizerIncidentDrawer({
     reportedAtDraft,
     volunteersDraft,
     injuriesDraft,
+    criticalityDraft,
+    derivedCriticality,
   ]);
 
   return (
@@ -203,12 +236,30 @@ export function OrganizerIncidentDrawer({
           </Button>
         </div>
         <div className="flex flex-wrap items-center gap-2 pt-1">
-          <span
-            className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
-            style={{ borderColor: meta.stroke, color: meta.stroke, backgroundColor: `${meta.stroke}15` }}
-          >
-            {meta.label}
-          </span>
+          {isEditable ? (
+            <Select value={criticalityDraft} onValueChange={setCriticalityDraft}>
+              <SelectTrigger
+                className="h-9 w-[120px] border px-2.5 text-xs font-semibold"
+                style={{ borderColor: meta.stroke, color: meta.stroke }}
+              >
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="z-[9999]">
+                {CRITICALITY_OPTIONS.map((o) => (
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <span
+              className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
+              style={{ borderColor: meta.stroke, color: meta.stroke, backgroundColor: `${meta.stroke}15` }}
+            >
+              {meta.label}
+            </span>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -223,7 +274,7 @@ export function OrganizerIncidentDrawer({
                 <ChevronDown className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="start" className="z-[9999]">
               {VERIFICATION_OPTIONS.map((o) => (
                 <DropdownMenuItem
                   key={o.value}

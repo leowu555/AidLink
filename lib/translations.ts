@@ -87,7 +87,16 @@ export type TranslationKey =
   | "reportedAt"
   | "injuriesReported"
   | "situationSummary"
-  | "sourceExcerpt";
+  | "sourceExcerpt"
+  | "regionSummary"
+  | "overallState"
+  | "priorityIncidents"
+  | "resourceAllocation"
+  | "manpowerSummary"
+  | "additionalSupport"
+  | "noRegionReport"
+  | "backToOrganizerMap"
+  | "lastUpdated";
 
 const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
   en: {
@@ -102,7 +111,7 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     openDetails: "Open details",
     criticality: "Criticality (by time since incident)",
     critical: "Critical",
-    needsSupport: "Needs Support",
+    needsSupport: "Moderate",
     cleanUp: "Clean Up",
     hoverHint: "Hover a marker for summary",
     clickHint: "Click Open details for full panel",
@@ -186,6 +195,15 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     injuriesReported: "Injuries (reported estimate)",
     situationSummary: "Situation summary",
     sourceExcerpt: "Source excerpt",
+    regionSummary: "Region Summary",
+    overallState: "Overall State",
+    priorityIncidents: "Priority Incidents",
+    resourceAllocation: "Resource Allocation",
+    manpowerSummary: "Manpower Summary",
+    additionalSupport: "Additional Support",
+    noRegionReport: "No region report available.",
+    backToOrganizerMap: "Back to Organizer Map",
+    lastUpdated: "Last updated",
   },
   ar: {
     viewCrisisMap: "عرض خريطة الأزمات",
@@ -199,7 +217,7 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     openDetails: "فتح التفاصيل",
     criticality: "الحرجة (حسب وقت الحادث)",
     critical: "حرج",
-    needsSupport: "يحتاج دعم",
+    needsSupport: "متوسط",
     cleanUp: "تنظيف",
     hoverHint: "مرر فوق العلامة للملخص",
     clickHint: "انقر فتح التفاصيل للوحة الكاملة",
@@ -283,6 +301,15 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     injuriesReported: "الإصابات (تقدير التقرير)",
     situationSummary: "ملخص الوضع",
     sourceExcerpt: "مقتطف المصدر",
+    regionSummary: "ملخص المنطقة",
+    overallState: "الحالة العامة",
+    priorityIncidents: "الحوادث ذات الأولوية",
+    resourceAllocation: "تخصيص الموارد",
+    manpowerSummary: "ملخص القوى العاملة",
+    additionalSupport: "الدعم الإضافي",
+    noRegionReport: "لا يوجد تقرير للمنطقة.",
+    backToOrganizerMap: "العودة لخريطة المنظمين",
+    lastUpdated: "آخر تحديث",
   },
   uk: {
     viewCrisisMap: "Переглянути карту кризи",
@@ -296,7 +323,7 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     openDetails: "Відкрити деталі",
     criticality: "Критичність (за часом з моменту інциденту)",
     critical: "Критично",
-    needsSupport: "Потрібна підтримка",
+    needsSupport: "Помірний",
     cleanUp: "Завершено",
     hoverHint: "Наведіть на маркер для підсумку",
     clickHint: "Натисніть «Відкрити деталі» для повної панелі",
@@ -380,6 +407,15 @@ const TRANSLATIONS: Record<LangCode, Record<TranslationKey, string>> = {
     injuriesReported: "Поранення (орієнтовно)",
     situationSummary: "Підсумок ситуації",
     sourceExcerpt: "Витяг з джерела",
+    regionSummary: "Підсумок регіону",
+    overallState: "Загальний стан",
+    priorityIncidents: "Пріоритетні інциденти",
+    resourceAllocation: "Розподіл ресурсів",
+    manpowerSummary: "Підсумок персоналу",
+    additionalSupport: "Додаткова підтримка",
+    noRegionReport: "Звіт по регіону відсутній.",
+    backToOrganizerMap: "Назад до карти організаторів",
+    lastUpdated: "Оновлено",
   },
 };
 

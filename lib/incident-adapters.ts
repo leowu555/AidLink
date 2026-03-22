@@ -39,16 +39,29 @@ const TIME_URGENCY_TO_CRITICALITY: Record<string, CriticalityTier> = {
   CLEAN_UP: "cleanup",
 };
 
+/** urgencyLevel override: CRITICAL|HIGH|LOW set by organizer */
+const URGENCY_TO_CRITICALITY: Record<string, CriticalityTier> = {
+  CRITICAL: "critical",
+  HIGH: "needs support",
+  MODERATE: "needs support",
+  LOW: "cleanup",
+  CLEAN_UP: "cleanup",
+};
+
 export function prismaToMapIncident(inc: Incident): MapIncident {
-  const tier = getTimeUrgencyTier(inc.reportedAt);
-  const criticality = TIME_URGENCY_TO_CRITICALITY[tier] ?? "cleanup";
+  const reportedAt = inc.reportedAt instanceof Date
+    ? inc.reportedAt.toISOString()
+    : String(inc.reportedAt ?? new Date().toISOString());
+  const urgencyOverride = inc.urgencyLevel && URGENCY_TO_CRITICALITY[inc.urgencyLevel];
+  const tier = getTimeUrgencyTier(reportedAt);
+  const criticality = urgencyOverride ?? TIME_URGENCY_TO_CRITICALITY[tier] ?? "cleanup";
   return {
     id: inc.id,
     lat: inc.lat,
     lng: inc.lng,
     title: inc.title,
     summary: inc.description ?? undefined,
-    reportedAt: inc.reportedAt.toISOString(),
+    reportedAt,
     criticality,
     casualtiesEstimate: inc.injuriesReported ?? 0,
     casualtiesCategory: inc.injuriesReported

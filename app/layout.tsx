@@ -22,7 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} ${quicksand.variable} antialiased`}>
-        {children}
+        <div className="relative z-0 min-h-screen">
+          {children}
+        </div>
       </body>
     </html>
   );

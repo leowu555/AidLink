@@ -236,6 +236,7 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
       volunteersNeeded?: number;
       injuriesReported?: number;
       verificationStatus?: string;
+      urgencyLevel?: string;
     }
   ) => {
     await fetch("/api/dashboard/incidents", {
@@ -323,6 +324,11 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
             <Link href={`/map?region=${region}&lang=${lang}`} className="shrink-0">
               <Button variant="outline" size="sm" className="h-9">
                 {t(lang, "crisisMap")}
+              </Button>
+            </Link>
+            <Link href={`/dashboard/summary/${region}?lang=${lang}`} className="shrink-0">
+              <Button variant="outline" size="sm" className="h-9">
+                {t(lang, "regionSummary")}
               </Button>
             </Link>
             <Select

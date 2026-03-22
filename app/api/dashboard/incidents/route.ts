@@ -106,6 +106,7 @@ export async function PATCH(req: NextRequest) {
       safetyNote,
       injuriesReported,
       reportedAt,
+      urgencyLevel,
     } = body;
 
     if (!incidentId) {
@@ -128,6 +129,9 @@ export async function PATCH(req: NextRequest) {
     if (safetyNote != null) update.safetyNote = safetyNote;
     if (injuriesReported != null) update.injuriesReported = Number(injuriesReported);
     if (reportedAt != null) update.reportedAt = new Date(reportedAt);
+    if (urgencyLevel != null && ["CRITICAL", "HIGH", "LOW", "MODERATE", "CLEAN_UP"].includes(String(urgencyLevel))) {
+      update.urgencyLevel = String(urgencyLevel);
+    }
 
     await prisma.incident.update({
       where: { id: incidentId },
