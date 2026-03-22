@@ -71,6 +71,7 @@ model Incident {
   incidentType        String   // rescue, medical, food, shelter, transport
   helpTypesNeeded     String   // JSON array of needed roles
   volunteersNeeded    Int      @default(1)
+  injuriesReported    Int      @default(0) // estimated casualties / injuries (demo field)
   safetyNote          String?
   checkInCode         String?  @unique // For QR/demo check-in
   createdAt           DateTime @default(now())

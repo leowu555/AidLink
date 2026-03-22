@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { VerificationBadge } from "@/components/VerificationBadge";
 import { SeverityBadge } from "@/components/SeverityBadge";
@@ -79,6 +80,10 @@ export function IncidentDrawer({
 
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="rounded-lg border p-3">
+            <p className="text-muted-foreground">Injuries (reported est.)</p>
+            <p className="font-semibold">{incident.injuriesReported ?? 0}</p>
+          </div>
+          <div className="rounded-lg border p-3">
             <p className="text-muted-foreground">Volunteers Needed</p>
             <p className="font-semibold">{incident.volunteersNeeded}</p>
           </div>
@@ -90,7 +95,7 @@ export function IncidentDrawer({
             <p className="text-muted-foreground">Checked In</p>
             <p className="font-semibold">{checkedInCount}</p>
           </div>
-          <div className="rounded-lg border p-3">
+          <div className="rounded-lg border p-3 col-span-2">
             <p className="text-muted-foreground">Interested</p>
             <p className="font-semibold">{interestedCount}</p>
           </div>
@@ -105,6 +110,12 @@ export function IncidentDrawer({
 
         {incident.safetyNote && (
           <SafetyNotice text={incident.safetyNote} />
+        )}
+
+        {isPublic && (
+          <Button variant="outline" className="w-full" asChild>
+            <Link href={`/map/incident/${incident.id}`}>More info — full report</Link>
+          </Button>
         )}
 
         {isPublic && onOfferHelp && (

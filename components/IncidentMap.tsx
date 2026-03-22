@@ -57,7 +57,7 @@ export function IncidentMap({
   incidents,
   selectedId,
   onSelect,
-  center = [34.0522, -118.2437],
+  center = [31.4, 34.45],
   zoom = 11,
   className = "",
 }: IncidentMapProps) {
