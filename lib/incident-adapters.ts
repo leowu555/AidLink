@@ -9,22 +9,35 @@ const CRITICALITY_TO_TIER: Record<string, CriticalityTier> = {
   cleanup: "cleanup",
 };
 
+/** Default volunteer count when manpower_needed_estimate is 0 or missing. */
+function manpowerFromCategory(cat: string | null | undefined): number {
+  const c = String(cat ?? "").toLowerCase();
+  if (c === "large") return 25;
+  if (c === "moderate") return 10;
+  if (c === "small") return 5;
+  return 10;
+}
+
 export function jsonToMapIncident(raw: IncidentJson): MapIncident {
   const criticality =
-    CRITICALITY_TO_TIER[raw.criticality.toLowerCase()] ?? "cleanup";
+    CRITICALITY_TO_TIER[(raw.criticality ?? "").toString().toLowerCase()] ?? "cleanup";
+  const centre = raw.location_centre ?? { lat: 0, lon: 0 };
+  const est = raw.manpower_needed_estimate;
+  const manpowerEstimate =
+    typeof est === "number" && est > 0 ? est : manpowerFromCategory(raw.manpower_needed);
   return {
     id: raw.incident_id,
-    lat: raw.location_centre.lat,
-    lng: raw.location_centre.lon,
-    radiusKm: raw.location_radius_km,
+    lat: centre.lat,
+    lng: centre.lon,
+    radiusKm: raw.location_radius_km ?? undefined,
     title: raw.summary.slice(0, 80) + (raw.summary.length > 80 ? "…" : ""),
     summary: raw.summary,
     reportedAt: raw.time_of_incident,
-    timeSince: raw.time_since_incident,
+    timeSince: raw.time_since_incident ?? undefined,
     criticality,
     casualtiesEstimate: raw.casualties_estimate,
     casualtiesCategory: raw.casualties,
-    manpowerEstimate: raw.manpower_needed_estimate,
+    manpowerEstimate,
     manpowerCategory: raw.manpower_needed,
     verification: raw.verification,
     posts: raw.posts ?? [],
@@ -52,9 +65,13 @@ export function prismaToMapIncident(inc: Incident): MapIncident {
   const reportedAt = inc.reportedAt instanceof Date
     ? inc.reportedAt.toISOString()
     : String(inc.reportedAt ?? new Date().toISOString());
-  const urgencyOverride = inc.urgencyLevel && URGENCY_TO_CRITICALITY[inc.urgencyLevel];
+  const urgencyOverride =
+    inc.urgencyLevel && URGENCY_TO_CRITICALITY[inc.urgencyLevel]
+      ? URGENCY_TO_CRITICALITY[inc.urgencyLevel]
+      : undefined;
   const tier = getTimeUrgencyTier(reportedAt);
-  const criticality = urgencyOverride ?? TIME_URGENCY_TO_CRITICALITY[tier] ?? "cleanup";
+  const criticality: CriticalityTier =
+    urgencyOverride ?? TIME_URGENCY_TO_CRITICALITY[tier] ?? "cleanup";
   return {
     id: inc.id,
     lat: inc.lat,

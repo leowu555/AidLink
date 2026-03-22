@@ -266,12 +266,12 @@ export function OrganizerIncidentDrawer({
                 variant="outline"
                 size="sm"
                 className={cn(
-                  "h-9 gap-1.5 font-semibold px-2.5",
+                  "h-9 gap-1.5 font-semibold px-2.5 rounded-md cursor-pointer",
                   verificationStyle
                 )}
               >
                 {currentLabel}
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4 opacity-70" aria-hidden />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="z-[9999]">

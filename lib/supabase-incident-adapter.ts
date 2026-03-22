@@ -26,6 +26,14 @@ const CRITICALITY_MAP: Record<string, CriticalityTier> = {
   cleanup: "cleanup",
 };
 
+function manpowerFromCategory(cat: string | null | undefined): number {
+  const c = String(cat ?? "").toLowerCase();
+  if (c === "large") return 25;
+  if (c === "moderate") return 10;
+  if (c === "small") return 5;
+  return 10;
+}
+
 function parsePosts(val: unknown): string[] {
   if (Array.isArray(val)) {
     return val.filter((x): x is string => typeof x === "string");
@@ -80,7 +88,10 @@ export function supabaseToMapIncident(row: SupabaseIncidentRow): MapIncident {
     criticality,
     casualtiesEstimate: row.casualties_estimate ?? 0,
     casualtiesCategory: row.casualties ?? "few",
-    manpowerEstimate: row.manpower_needed_estimate ?? 0,
+    manpowerEstimate:
+      (typeof row.manpower_needed_estimate === "number" && row.manpower_needed_estimate > 0)
+        ? row.manpower_needed_estimate
+        : manpowerFromCategory(row.manpower_needed),
     manpowerCategory: row.manpower_needed ?? "small",
     verification: row.verification ?? "initial_reports",
     posts,

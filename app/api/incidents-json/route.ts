@@ -1,15 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import type { IncidentJson } from "@/types/incident-json";
 
+export const dynamic = "force-dynamic";
+
+const REGION_FILES: Record<string, string> = {
+  gaza: "incidents.json",
+  ukraine: "incidents-ukraine.json",
+};
+
 /**
- * Serves incident JSON from data/incidents.json.
- * TODO: Replace with Supabase fetch when backend pipeline is connected.
+ * Serves incident JSON from data folder. Supports ?region=gaza|ukraine.
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    const filePath = path.join(process.cwd(), "data", "incidents.json");
+    const { searchParams } = new URL(request.url);
+    const region = searchParams.get("region") || "gaza";
+    const filename = REGION_FILES[region] || REGION_FILES.gaza;
+    const filePath = path.join(process.cwd(), "data", filename);
     if (!fs.existsSync(filePath)) {
       return NextResponse.json({ incidents: [] });
     }

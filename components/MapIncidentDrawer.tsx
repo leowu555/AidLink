@@ -9,7 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { X, ExternalLink, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { X, ExternalLink, Trash2, ChevronDown } from "lucide-react";
 import type { MapIncident, CriticalityTier, CasualtiesCategory, ManpowerCategory } from "@/types/incident-json";
 import { CRITICALITY_META } from "@/lib/criticality-meta";
 import { useLanguageStore } from "@/lib/language-store";
@@ -22,12 +28,23 @@ const VERIFICATION_KEYS: Record<string, "verificationInitial" | "verificationCon
   verified: "verificationVerified",
 };
 
-const CRITICALITY_OPTIONS: CriticalityTier[] = ["critical", "needs support", "cleanup"];
-const VERIFICATION_OPTIONS: Array<{ value: string; labelKey: TranslationKey }> = [
-  { value: "initial_reports", labelKey: "verificationInitial" },
-  { value: "confident", labelKey: "verificationConfident" },
-  { value: "verified", labelKey: "verificationVerified" },
+const VERIFICATION_OPTIONS: Array<{
+  value: "initial_reports" | "confident" | "verified";
+  labelKey: TranslationKey;
+  style: string;
+}> = [
+  { value: "initial_reports", labelKey: "verificationInitial", style: "border-red-300 bg-red-500/15 text-red-700" },
+  { value: "confident", labelKey: "verificationConfident", style: "border-amber-300 bg-amber-500/15 text-amber-700" },
+  { value: "verified", labelKey: "verificationVerified", style: "border-green-300 bg-green-500/15 text-green-700" },
 ];
+
+const VERIFICATION_STYLES: Record<string, string> = {
+  initial_reports: "border-red-300 bg-red-500/15 text-red-700",
+  confident: "border-amber-300 bg-amber-500/15 text-amber-700",
+  verified: "border-green-300 bg-green-500/15 text-green-700",
+};
+
+const CRITICALITY_OPTIONS: CriticalityTier[] = ["critical", "needs support", "cleanup"];
 const CASUALTIES_OPTIONS: CasualtiesCategory[] = ["few", "some", "many"];
 const MANPOWER_OPTIONS: ManpowerCategory[] = ["small", "moderate", "large"];
 
@@ -178,18 +195,48 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={verificationDraft} onValueChange={setVerificationDraft}>
-                <SelectTrigger className="h-9 w-[130px] border border-border px-2.5 text-xs font-semibold">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="z-[9999]">
-                  {VERIFICATION_OPTIONS.map((o) => (
-                    <SelectItem key={o.value} value={o.value}>
-                      {t(lang, o.labelKey)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              {onUpdate ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className={cn(
+                        "h-9 gap-1.5 font-semibold px-2.5",
+                        VERIFICATION_STYLES[verificationDraft] ?? VERIFICATION_STYLES.initial_reports
+                      )}
+                    >
+                      {t(lang, (VERIFICATION_KEYS[verificationDraft] ?? "verificationInitial") as TranslationKey)}
+                      <ChevronDown className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="z-[9999]">
+                    {VERIFICATION_OPTIONS.map((o) => (
+                      <DropdownMenuItem
+                        key={o.value}
+                        onClick={() => {
+                          setVerificationDraft(o.value);
+                          onUpdate(incident.id, { verification: o.value });
+                        }}
+                        className={cn("cursor-pointer", o.style)}
+                      >
+                        {t(lang, o.labelKey)}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <span
+                  className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
+                  style={{
+                    borderColor: "var(--border)",
+                    color: "hsl(var(--foreground))",
+                    backgroundColor: "hsl(var(--muted))",
+                  }}
+                >
+                  {t(lang, (VERIFICATION_KEYS[verificationDraft] ?? "verificationInitial") as TranslationKey)}
+                </span>
+              )}
             </>
           ) : (
             <>

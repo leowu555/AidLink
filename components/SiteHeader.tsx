@@ -20,6 +20,8 @@ export type SiteHeaderNavItem = { href: string; label: string };
 interface SiteHeaderProps {
   navItems: SiteHeaderNavItem[];
   className?: string;
+  /** Called when language changes (e.g. to sync URL) */
+  onLangChange?: (newLang: LangCode) => void;
 }
 
 const LANG_LABELS: Record<LangCode, string> = {
@@ -28,9 +30,15 @@ const LANG_LABELS: Record<LangCode, string> = {
   uk: "Українська",
 };
 
-export function SiteHeader({ navItems, className }: SiteHeaderProps) {
-  const { lang, setLang, availableLangs } = useLanguageStore();
+export function SiteHeader({ navItems, className, onLangChange }: SiteHeaderProps) {
+  const { lang, setLang, region, availableLangs } = useLanguageStore();
   const langs = availableLangs();
+
+  const handleLangChange = (v: string) => {
+    const newLang = v as LangCode;
+    setLang(newLang);
+    onLangChange?.(newLang);
+  };
 
   return (
     <header
@@ -57,7 +65,7 @@ export function SiteHeader({ navItems, className }: SiteHeaderProps) {
               {t(lang, "organizerMap")}
             </Button>
           </Link>
-          <Select value={lang} onValueChange={(v) => setLang(v as LangCode)}>
+          <Select value={lang} onValueChange={handleLangChange}>
             <SelectTrigger className="w-[100px] sm:w-[110px] h-9 shrink-0" aria-label={t(lang, "selectLanguage")}>
               <SelectValue />
             </SelectTrigger>

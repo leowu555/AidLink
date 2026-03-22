@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { prisma } from "@/lib/prisma";
+import { pointInBounds } from "@/lib/gaza-zones";
+import { pointInUkraineBounds } from "@/lib/ukraine-zones";
+import { REGIONS } from "@/lib/regions";
 
 const VALID_REGIONS = ["gaza", "ukraine"] as const;
 
@@ -26,10 +30,8 @@ export async function GET(request: NextRequest) {
   }
 
   if (!supabase) {
-    return NextResponse.json(
-      { error: "Supabase not configured", report: null },
-      { status: 503 }
-    );
+    const fallback = await buildFallbackReport(region);
+    return NextResponse.json({ report: fallback });
   }
 
   try {
@@ -41,15 +43,14 @@ export async function GET(request: NextRequest) {
 
     if (error) {
       console.error("Region reports fetch error:", error);
-      return NextResponse.json(
-        { error: error.message, report: null },
-        { status: 500 }
-      );
+      const fallback = await buildFallbackReport(region);
+      return NextResponse.json({ report: fallback });
     }
 
     const row = data as RegionReportRow | null;
     if (!row) {
-      return NextResponse.json({ report: null });
+      const fallback = await buildFallbackReport(region);
+      return NextResponse.json({ report: fallback });
     }
 
     let priorityIncidents: string[] = [];
@@ -78,9 +79,54 @@ export async function GET(request: NextRequest) {
     });
   } catch (e) {
     console.error("Region reports error:", e);
-    return NextResponse.json(
-      { error: "Failed to fetch region report", report: null },
-      { status: 500 }
-    );
+    const fallback = await buildFallbackReport(region);
+    return NextResponse.json({ report: fallback });
+  }
+}
+
+function inRegion(lat: number, lng: number, regionId: string): boolean {
+  const config = REGIONS[regionId as keyof typeof REGIONS];
+  if (!config) return false;
+  if (regionId === "gaza") return pointInBounds(lat, lng, config.flyBounds);
+  if (regionId === "ukraine") return pointInUkraineBounds(lat, lng, config.flyBounds);
+  return false;
+}
+
+async function buildFallbackReport(region: string): Promise<{
+  region: string;
+  overall_state: string;
+  priority_incidents: string[];
+  resource_allocation: string;
+  manpower_summary: string;
+  additional_support: string;
+  confidence_in_data: string | null;
+  generated_at: string | null;
+} | null> {
+  try {
+    const incidents = await prisma.incident.findMany({
+      where: { operationalStatus: { not: "RESOLVED" } },
+      orderBy: { reportedAt: "desc" },
+      take: 100,
+    });
+    const inRegionList = incidents.filter((i) => inRegion(i.lat, i.lng, region));
+    const critical = inRegionList.filter((i) => (i.severityScore ?? 0) >= 8);
+    const totalNeeded = inRegionList.reduce((s, i) => s + (i.volunteersNeeded ?? 0), 0);
+    const totalReported = inRegionList.length;
+    const overall = totalReported > 0
+      ? `${totalReported} open incident(s) in region. ${critical.length} critical. ${totalNeeded} volunteers needed across all incidents.`
+      : "No open incidents in database for this region.";
+    const priority = critical.slice(0, 10).map((i) => i.title || i.id);
+    return {
+      region,
+      overall_state: overall,
+      priority_incidents: priority,
+      resource_allocation: totalNeeded > 0 ? `Estimated ${totalNeeded} volunteers needed across incidents.` : "—",
+      manpower_summary: totalReported > 0 ? `${inRegionList.length} incidents require coordination.` : "—",
+      additional_support: "Data from local database. Configure Supabase for richer reports.",
+      confidence_in_data: "moderate",
+      generated_at: new Date().toISOString(),
+    };
+  } catch {
+    return null;
   }
 }

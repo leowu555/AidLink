@@ -38,8 +38,19 @@ export function prismaToDisplay(inc: Incident): DisplayIncident {
   };
 }
 
+function manpowerFromCategory(cat: string | null | undefined): number {
+  const c = String(cat ?? "").toLowerCase();
+  if (c === "large") return 25;
+  if (c === "moderate") return 10;
+  if (c === "small") return 5;
+  return 10;
+}
+
 export function jsonToDisplay(raw: IncidentJson): DisplayIncident {
   const loc = raw.location_centre;
+  const est = raw.manpower_needed_estimate;
+  const volunteersNeeded =
+    typeof est === "number" && est > 0 ? est : manpowerFromCategory(raw.manpower_needed);
   return {
     id: raw.incident_id,
     title: raw.summary.slice(0, 120) + (raw.summary.length > 120 ? "…" : ""),
@@ -48,11 +59,14 @@ export function jsonToDisplay(raw: IncidentJson): DisplayIncident {
     severityScore: CRITICALITY_TO_SEVERITY[raw.criticality] ?? 5,
     operationalStatus: "ACTIVE",
     incidentType: "rescue",
-    volunteersNeeded: raw.manpower_needed_estimate ?? 10,
+    volunteersNeeded,
   };
 }
 
 export function mapToDisplay(inc: MapIncident): DisplayIncident {
+  const est = inc.manpowerEstimate;
+  const volunteersNeeded =
+    typeof est === "number" && est > 0 ? est : manpowerFromCategory(inc.manpowerCategory);
   return {
     id: inc.id,
     title: (inc.title?.slice(0, 120) ?? "") + (inc.title && inc.title.length > 120 ? "…" : ""),
@@ -61,6 +75,6 @@ export function mapToDisplay(inc: MapIncident): DisplayIncident {
     severityScore: CRITICALITY_TO_SEVERITY[inc.criticality] ?? 5,
     operationalStatus: "ACTIVE",
     incidentType: "rescue",
-    volunteersNeeded: inc.manpowerEstimate ?? 10,
+    volunteersNeeded,
   };
 }

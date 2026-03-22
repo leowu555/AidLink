@@ -46,9 +46,9 @@ export default function LandingPage() {
                 </Label>
                 <Select value={region} onValueChange={(v) => setRegion(v as "gaza" | "ukraine")}>
                   <SelectTrigger id="region-select" className="w-[180px]">
-                    <SelectValue />
+                    <SelectValue placeholder={t(lang, "selectRegion")} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-[9999]">
                     {REGION_IDS.map((id) => (
                       <SelectItem key={id} value={id}>
                         {REGIONS[id].name.en}
@@ -63,9 +63,9 @@ export default function LandingPage() {
                 </Label>
                 <Select value={lang} onValueChange={(v) => setLang(v as "en" | "ar" | "uk")}>
                   <SelectTrigger id="lang-select" className="w-[180px]">
-                    <SelectValue />
+                    <SelectValue placeholder={t(lang, "selectLanguage")} />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="z-[9999]">
                     {regionConfig.languages.map((code) => (
                       <SelectItem key={code} value={code}>
                         {code === "en" ? t(lang, "english") : code === "ar" ? t(lang, "arabic") : t(lang, "ukrainian")}

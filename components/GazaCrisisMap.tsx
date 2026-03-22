@@ -242,7 +242,7 @@ export function GazaCrisisMap({
                           e.stopPropagation();
                           onSelectIncident(inc.id);
                           const z = getZoneForPoint(inc.lat, inc.lng);
-                          onSelectZone(z ?? null);
+                          onSelectZone(z?.id ?? null);
                         }}
                       >
                         Open details

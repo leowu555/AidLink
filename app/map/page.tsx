@@ -95,7 +95,7 @@ function PublicMapContent() {
           return;
         }
         // Fallback to legacy sources if Supabase returns empty
-        return fetch("/api/incidents-json")
+        return fetch(`/api/incidents-json?region=${region}`)
           .then((r) => r.json())
           .then((jsonData: { incidents?: IncidentJson[] }) => {
             const json = jsonData.incidents ?? [];
@@ -139,6 +139,7 @@ function PublicMapContent() {
         navItems={[
           { href: "/", label: t(lang, "home") },
         ]}
+        onLangChange={(newLang) => router.replace(`/map?region=${region}&lang=${newLang}`)}
       />
 
       <div className="relative flex min-h-0 flex-1 flex-col">

@@ -38,8 +38,6 @@ export function IncidentCard({
   variant = "default",
   organizerLabels = false,
 }: IncidentCardProps) {
-  const shortage = Math.max(0, incident.volunteersNeeded - checkedInCount);
-
   return (
     <Card
       className={cn(
@@ -72,11 +70,9 @@ export function IncidentCard({
             <Users className="h-4 w-4" />
             {confirmedCount}/{incident.volunteersNeeded} confirmed
           </span>
-          {shortage > 0 && (
-            <span className="text-amber-600 font-medium">
-              -{shortage} needed
-            </span>
-          )}
+          <span className="text-muted-foreground">
+            {incident.volunteersNeeded} needed
+          </span>
         </div>
         <div className="text-xs text-muted-foreground mt-1">
           I:{interestedCount} • C:{confirmedCount} • ✓:{checkedInCount}

@@ -155,7 +155,7 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
           setCounts(incData.counts ?? {});
           const openCount = incidents.filter((i: Incident) => i.operationalStatus !== "RESOLVED").length;
           if (openCount === 0) {
-            return fetch("/api/incidents-json")
+            return fetch(`/api/incidents-json?region=${region}`)
               .then((r) => (r.ok ? r.json() : Promise.resolve({ incidents: [] })))
               .then((jsonData: { incidents?: IncidentJson[] }) => {
                 const json = jsonData.incidents ?? [];
