@@ -199,6 +199,15 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
     fetchDashboard();
   };
 
+  const handleSummarySave = async (incidentId: string, summary: string) => {
+    await fetch("/api/dashboard/incidents", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ incidentId, description: summary }),
+    });
+    fetchDashboard();
+  };
+
   const handleEditSave = async (
     id: string,
     data: {
@@ -343,6 +352,7 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
               setEditIncident(inc);
               setEditModalOpen(true);
             }}
+            onSummarySave={handleSummarySave}
             onCheckIn={
               selectedPrismaIncident.checkInCode
                 ? () => setCheckInOpen(true)
@@ -370,6 +380,22 @@ export function OrganizerMap({ region, lang }: OrganizerMapProps) {
               setSelectedId(null);
               setJsonFallbackIncidents((prev) => prev.filter((i) => i.id !== id));
             }}
+            onSummarySave={
+              supabaseIncidents.length > 0
+                ? async (incidentId, summary) => {
+                    await fetch("/api/incidents-supabase", {
+                      method: "PATCH",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        incidentId,
+                        region,
+                        summary,
+                      }),
+                    });
+                    fetchDashboard();
+                  }
+                : undefined
+            }
           />
         )}
 

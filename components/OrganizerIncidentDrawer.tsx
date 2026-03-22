@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -35,6 +36,7 @@ interface OrganizerIncidentDrawerProps {
   onRemove: (incidentId: string) => void;
   onEdit?: (incident: Incident) => void;
   onCheckIn?: () => void;
+  onSummarySave?: (incidentId: string, summary: string) => void | Promise<void>;
   assignmentPanel?: React.ReactNode;
 }
 
@@ -74,8 +76,15 @@ export function OrganizerIncidentDrawer({
   onRemove,
   onEdit,
   onCheckIn,
+  onSummarySave,
   assignmentPanel,
 }: OrganizerIncidentDrawerProps) {
+  const [summaryDraft, setSummaryDraft] = useState<string>(incident.description ?? "");
+  const [isSavingSummary, setIsSavingSummary] = useState(false);
+
+  useEffect(() => {
+    setSummaryDraft(incident.description ?? "");
+  }, [incident.description]);
   const tier = getTimeUrgencyTier(incident.reportedAt);
   const criticality =
     tier === "CRITICAL"
@@ -91,6 +100,20 @@ export function OrganizerIncidentDrawer({
 
   const handleEdit = () => onEdit?.(incident);
 
+  const saveSummary = useCallback(async () => {
+    if (!onSummarySave || summaryDraft === (incident.description ?? "")) return;
+    setIsSavingSummary(true);
+    try {
+      await onSummarySave(incident.id, summaryDraft);
+    } finally {
+      setIsSavingSummary(false);
+    }
+  }, [incident.id, incident.description, onSummarySave, summaryDraft]);
+
+  const handleSummaryBlur = () => {
+    if (summaryDraft !== (incident.description ?? "")) saveSummary();
+  };
+
   return (
     <div
       className={cn(
@@ -98,18 +121,17 @@ export function OrganizerIncidentDrawer({
         "animate-in slide-in-from-right duration-200"
       )}
     >
-      <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-2 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <h2 className="line-clamp-2 flex-1 text-lg font-semibold">{incident.title}</h2>
-        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close">
-          <X className="h-4 w-4" />
-        </Button>
-      </div>
-
-      <div className="space-y-5 p-5">
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="sticky top-0 z-10 flex shrink-0 flex-col gap-3 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="flex items-start justify-between gap-2">
+          <h2 className="line-clamp-2 flex-1 text-lg font-semibold">{incident.title}</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close">
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 pt-1">
           <span
-            className="rounded-md border px-2 py-1 text-xs font-medium"
-            style={{ borderColor: meta.stroke, color: meta.stroke }}
+            className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
+            style={{ borderColor: meta.stroke, color: meta.stroke, backgroundColor: `${meta.stroke}15` }}
           >
             {meta.label}
           </span>
@@ -119,7 +141,7 @@ export function OrganizerIncidentDrawer({
                 variant="outline"
                 size="sm"
                 className={cn(
-                  "h-9 gap-1.5 font-medium",
+                  "h-9 gap-1.5 font-semibold px-2.5",
                   verificationStyle
                 )}
               >
@@ -140,21 +162,36 @@ export function OrganizerIncidentDrawer({
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
+      </div>
 
-        <EditableBox onEdit={handleEdit}>
-          {incident.description && (
-            <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
-              <p className="font-medium text-muted-foreground">Summary</p>
-              <p className="mt-1 pr-8">{incident.description}</p>
-            </div>
+      <div className="space-y-5 p-5">
+        <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
+          <p className="font-medium text-muted-foreground mb-2">Summary</p>
+          {onSummarySave ? (
+            <>
+              <textarea
+                value={summaryDraft}
+                onChange={(e) => setSummaryDraft(e.target.value)}
+                onBlur={handleSummaryBlur}
+                placeholder="Add or edit the incident summary…"
+                rows={4}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[80px] resize-y"
+              />
+              {summaryDraft !== (incident.description ?? "") && (
+                <Button
+                  size="sm"
+                  className="mt-2"
+                  disabled={isSavingSummary}
+                  onClick={saveSummary}
+                >
+                  {isSavingSummary ? "Saving…" : "Save summary"}
+                </Button>
+              )}
+            </>
+          ) : (
+            <p className="mt-1">{incident.description ?? "No description"}</p>
           )}
-          {!incident.description && onEdit && (
-            <div className="rounded-xl border border-dashed bg-card/30 p-4 text-sm">
-              <p className="font-medium text-muted-foreground">Summary</p>
-              <p className="mt-1 text-muted-foreground italic pr-8">No description — click pencil to add</p>
-            </div>
-          )}
-        </EditableBox>
+        </div>
 
         <EditableBox onEdit={handleEdit}>
           <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">

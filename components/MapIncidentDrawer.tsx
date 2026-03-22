@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useCallback, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ExternalLink, Trash2 } from "lucide-react";
 import type { MapIncident } from "@/types/incident-json";
@@ -19,11 +20,33 @@ interface MapIncidentDrawerProps {
   onClose: () => void;
   /** When provided (organizer context), shows Remove Incident button */
   onRemove?: (incidentId: string) => void;
+  /** When provided (organizer context), makes Summary editable and persists to backend */
+  onSummarySave?: (incidentId: string, summary: string) => void | Promise<void>;
 }
 
-export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDrawerProps) {
+export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave }: MapIncidentDrawerProps) {
   const { lang } = useLanguageStore();
   const meta = CRITICALITY_META[incident.criticality];
+  const [summaryDraft, setSummaryDraft] = useState<string>(incident.summary ?? "");
+  const [isSavingSummary, setIsSavingSummary] = useState(false);
+
+  useEffect(() => {
+    setSummaryDraft(incident.summary ?? "");
+  }, [incident.summary]);
+
+  const saveSummary = useCallback(async () => {
+    if (!onSummarySave || summaryDraft === (incident.summary ?? "")) return;
+    setIsSavingSummary(true);
+    try {
+      await onSummarySave(incident.id, summaryDraft);
+    } finally {
+      setIsSavingSummary(false);
+    }
+  }, [incident.id, incident.summary, onSummarySave, summaryDraft]);
+
+  const handleSummaryBlur = () => {
+    if (summaryDraft !== (incident.summary ?? "")) saveSummary();
+  };
 
   return (
     <div
@@ -32,32 +55,62 @@ export function MapIncidentDrawer({ incident, onClose, onRemove }: MapIncidentDr
         "animate-in slide-in-from-right duration-200"
       )}
     >
-      <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <h2 className="line-clamp-2 text-lg font-semibold">{incident.title}</h2>
-        <Button variant="ghost" size="icon" onClick={onClose} className="shrink-0" aria-label="Close">
-          <X className="h-4 w-4" />
-        </Button>
-      </div>
-
-      <div className="space-y-5 p-5">
-        <div className="flex flex-wrap gap-2">
+      <div className="sticky top-0 z-10 flex shrink-0 flex-col gap-3 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <div className="flex items-start justify-between gap-3">
+          <h2 className="line-clamp-2 flex-1 text-lg font-semibold">{incident.title}</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} className="shrink-0" aria-label="Close">
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+        <div className="flex flex-wrap gap-2 pt-1">
           <span
-            className="rounded-md border px-2 py-1 text-xs font-medium"
-            style={{ borderColor: meta.stroke, color: meta.stroke }}
+            className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
+            style={{ borderColor: meta.stroke, color: meta.stroke, backgroundColor: `${meta.stroke}15` }}
           >
             {getCriticalityLabel(lang, incident.criticality)}
           </span>
-          <span className="rounded-md border border-border px-2 py-1 text-xs font-medium text-muted-foreground">
+          <span
+            className="rounded-md border px-2.5 py-1.5 text-xs font-semibold"
+            style={{
+              borderColor: "var(--border)",
+              color: "hsl(var(--foreground))",
+              backgroundColor: "hsl(var(--muted))",
+            }}
+          >
             {t(lang, (VERIFICATION_KEYS[incident.verification] ?? "verificationInitial") as TranslationKey)}
           </span>
         </div>
+      </div>
 
-        {incident.summary && (
-          <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
-            <p className="font-medium text-muted-foreground">{t(lang, "summary")}</p>
-            <p className="mt-1">{incident.summary}</p>
-          </div>
-        )}
+      <div className="space-y-5 p-5">
+
+        <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
+          <p className="font-medium text-muted-foreground mb-2">{t(lang, "summary")}</p>
+          {onSummarySave ? (
+            <>
+              <textarea
+                value={summaryDraft}
+                onChange={(e) => setSummaryDraft(e.target.value)}
+                onBlur={handleSummaryBlur}
+                placeholder="Add or edit the incident summary…"
+                rows={4}
+                className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 min-h-[80px] resize-y"
+              />
+              {summaryDraft !== (incident.summary ?? "") && (
+                <Button
+                  size="sm"
+                  className="mt-2"
+                  disabled={isSavingSummary}
+                  onClick={saveSummary}
+                >
+                  {isSavingSummary ? "Saving…" : "Save summary"}
+                </Button>
+              )}
+            </>
+          ) : (
+            <p className="mt-1">{incident.summary ?? "—"}</p>
+          )}
+        </div>
 
         <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
           <p className="font-medium text-muted-foreground">{t(lang, "timeOfIncident")}</p>

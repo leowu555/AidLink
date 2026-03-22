@@ -129,6 +129,8 @@ function PublicMapContent() {
 
   useEffect(() => {
     fetchIncidents();
+    const id = setInterval(fetchIncidents, 15000);
+    return () => clearInterval(id);
   }, [fetchIncidents]);
 
   return (
