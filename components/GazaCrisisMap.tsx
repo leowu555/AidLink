@@ -7,7 +7,7 @@ import {
   Marker,
   Popup,
   Polygon,
-  Rectangle,
+  Tooltip,
   useMap,
 } from "react-leaflet";
 import L from "leaflet";
@@ -17,6 +17,7 @@ import {
   GAZA_STRIP_POLYGON,
   GAZA_FLY_BOUNDS,
   GAZA_SUB_ZONES,
+  boundsToRoundedPolygon,
   incidentsInZone,
   pointInBounds,
   zoneDisplayUrgency,
@@ -140,11 +141,17 @@ export function GazaCrisisMap({
             const fill = meta?.fill ?? "#64748b";
             const stroke = meta?.stroke ?? "#475569";
             const selected = selectedZoneId === zone.id;
+            const roundedPositions = boundsToRoundedPolygon(zone.bounds, 0.18);
+
+            const openDetails = () => {
+              onSelectZone(zone.id);
+              onSelectIncident(null);
+            };
 
             return (
-              <Rectangle
+              <Polygon
                 key={zone.id}
-                bounds={zone.bounds}
+                positions={roundedPositions}
                 pathOptions={{
                   color: selected ? "#0f172a" : stroke,
                   weight: selected ? 3 : 2,
@@ -155,21 +162,33 @@ export function GazaCrisisMap({
                 eventHandlers={{
                   click: (e) => {
                     L.DomEvent.stopPropagation(e as unknown as Event);
-                    onSelectZone(zone.id);
-                    onSelectIncident(null);
+                    openDetails();
                   },
                 }}
               >
-                <Popup>
-                  <p className="text-sm font-semibold">{zone.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {inZone.length} incident{inZone.length === 1 ? "" : "s"} •{" "}
-                    {urgency
-                      ? `${TIME_URGENCY_META[urgency].label} (by report age)`
-                      : "No active incidents"}
-                  </p>
-                </Popup>
-              </Rectangle>
+                <Tooltip direction="top" sticky opacity={0.95} className="zone-tooltip">
+                  <div className="min-w-[180px] py-1">
+                    <p className="font-semibold text-sm">{zone.name}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {inZone.length} incident{inZone.length === 1 ? "" : "s"} •{" "}
+                      {urgency
+                        ? `${TIME_URGENCY_META[urgency].label} (by report age)`
+                        : "No active incidents"}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        openDetails();
+                      }}
+                      className="mt-2 w-full rounded bg-primary px-2 py-1.5 text-xs font-medium text-primary-foreground hover:opacity-90"
+                    >
+                      Open details
+                    </button>
+                  </div>
+                </Tooltip>
+              </Polygon>
             );
           })}
 

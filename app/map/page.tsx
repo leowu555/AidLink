@@ -82,7 +82,7 @@ export default function PublicMapPage() {
       />
 
       <div className="relative flex min-h-0 flex-1 flex-col">
-        <div className="flex shrink-0 flex-wrap items-center gap-2 border-b bg-muted/30 px-4 py-2 text-sm">
+        <div className="flex shrink-0 flex-wrap items-center gap-3 border-b bg-muted/30 px-4 py-3 text-sm">
           <Button
             type="button"
             variant={gazaMode ? "secondary" : "default"}
@@ -107,8 +107,8 @@ export default function PublicMapPage() {
           )}
           <span className="text-muted-foreground">
             {gazaMode
-              ? "Click a colored zone for details. Pins use report age for color."
-              : "Click the shaded Gaza area to zoom in."}
+              ? "Hover a zone for a summary • Click or use Open details for full panel"
+              : "Click the shaded Gaza area to zoom in"}
           </span>
         </div>
 
@@ -150,7 +150,7 @@ export default function PublicMapPage() {
         )}
       </div>
 
-      <div className="pointer-events-none absolute left-4 top-32 z-[1000] max-w-[calc(100vw-2rem)] rounded-lg border bg-background/95 p-3 text-sm shadow backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:top-36">
+      <div className="pointer-events-none absolute left-4 top-32 z-[1000] max-w-[calc(100vw-2rem)] rounded-xl border bg-background/95 p-4 text-sm shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80 sm:top-36">
         <p className="pointer-events-auto font-medium">Urgency (by report age)</p>
         <div className="pointer-events-auto mt-2 flex flex-wrap gap-x-4 gap-y-1.5">
           <span className="flex items-center gap-1.5 whitespace-nowrap">

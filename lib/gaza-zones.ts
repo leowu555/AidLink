@@ -67,6 +67,40 @@ export const GAZA_SUB_ZONES: GazaSubZone[] = [
   },
 ];
 
+/** Generate a rounded-rectangle polygon from bounds. Radius as fraction of smaller dimension (0–0.5). */
+export function boundsToRoundedPolygon(
+  bounds: ZoneBounds,
+  radiusFraction = 0.15
+): [number, number][] {
+  const [[south, west], [north, east]] = bounds;
+  const dLat = north - south;
+  const dLng = east - west;
+  const r = Math.min(dLat, dLng) * radiusFraction;
+  const steps = 6;
+  const points: [number, number][] = [];
+
+  const arc = (
+    cx: number,
+    cy: number,
+    startAngle: number,
+    endAngle: number
+  ) => {
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const a = startAngle + t * (endAngle - startAngle);
+      points.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+    }
+  };
+
+  const deg = Math.PI / 180;
+  arc(south + r, west + r, 180 * deg, 270 * deg);
+  arc(south + r, east - r, 90 * deg, 180 * deg);
+  arc(north - r, east - r, 0, 90 * deg);
+  arc(north - r, west + r, 270 * deg, 360 * deg);
+  points.push(points[0]);
+  return points;
+}
+
 export function pointInBounds(
   lat: number,
   lng: number,

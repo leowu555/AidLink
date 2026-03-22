@@ -63,54 +63,56 @@ export function GazaZonePanel({
   return (
     <div
       className={cn(
-        "fixed right-0 top-0 z-40 flex h-full w-full max-w-md flex-col border-l bg-background shadow-xl",
+        "fixed right-0 top-0 z-40 flex h-full w-full max-w-md flex-col overflow-y-auto border-l bg-gradient-to-b from-background to-muted/20 shadow-2xl",
         "animate-in slide-in-from-right duration-200"
       )}
     >
-      <div className="flex shrink-0 items-center justify-between border-b p-4">
+      <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div>
           <h2 className="text-lg font-semibold">{zone.name}</h2>
           <p className="text-xs text-muted-foreground">Zone summary</p>
         </div>
-        <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close">
+        <Button variant="ghost" size="icon" onClick={onClose} className="shrink-0" aria-label="Close">
           <X className="h-4 w-4" />
         </Button>
       </div>
 
-      <div className="flex-1 space-y-4 overflow-y-auto p-4">
-        <div className="rounded-lg border p-3 text-sm">
+      <div className="flex-1 space-y-5 overflow-y-auto p-5">
+        <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
           <p className="font-medium text-muted-foreground">Location</p>
-          <p>{zone.name} (Gaza Strip)</p>
+          <p className="font-medium">{zone.name} (Gaza Strip)</p>
         </div>
 
-        <div className="rounded-lg border p-3 text-sm">
+        <div className="rounded-xl border bg-card/50 p-4 text-sm shadow-sm">
           <p className="font-medium text-muted-foreground">
             Most recent report time (in zone)
           </p>
-          <p>{latestReportTime}</p>
+          <p className="font-medium">{latestReportTime}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div className="rounded-lg border p-3">
-            <p className="text-muted-foreground">Volunteers (interested)</p>
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
+            <p className="text-muted-foreground">Missing People</p>
             <p className="text-lg font-semibold">{volunteerTotal.interested}</p>
           </div>
-          <div className="rounded-lg border p-3">
-            <p className="text-muted-foreground">Confirmed / on assignment</p>
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
+            <p className="text-muted-foreground">Confirmed Volunteers</p>
             <p className="text-lg font-semibold">{volunteerTotal.confirmed}</p>
           </div>
-          <div className="rounded-lg border p-3">
-            <p className="text-muted-foreground">Checked in</p>
-            <p className="text-lg font-semibold">{volunteerTotal.checkedIn}</p>
-          </div>
-          <div className="rounded-lg border p-3">
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">Injuries (reported est.)</p>
             <p className="text-lg font-semibold">{injuriesTotal}</p>
+          </div>
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
+            <p className="text-muted-foreground">Volunteers Needed</p>
+            <p className="text-lg font-semibold">
+              {inZone.reduce((s, inc) => s + inc.volunteersNeeded, 0)}
+            </p>
           </div>
         </div>
 
         {primary && (
-          <Button className="w-full" variant="secondary" asChild>
+          <Button className="w-full shadow-sm" variant="secondary" asChild>
             <Link href={`/map/incident/${primary.id}`}>
               More info — latest incident report
             </Link>
@@ -131,7 +133,7 @@ export function GazaZonePanel({
                     <button
                       type="button"
                       onClick={() => onSelectIncident(inc.id)}
-                      className="flex w-full flex-col rounded-md border bg-card px-3 py-2 text-left text-sm transition-colors hover:bg-accent/50"
+                      className="flex w-full flex-col rounded-xl border bg-card px-4 py-3 text-left text-sm shadow-sm transition-all hover:border-primary/30 hover:bg-accent/50 hover:shadow"
                     >
                       <span className="font-medium">{inc.title}</span>
                       <span className="text-xs text-muted-foreground">

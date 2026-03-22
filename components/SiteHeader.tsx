@@ -17,8 +17,8 @@ export function SiteHeader({ navItems, className }: SiteHeaderProps) {
         className
       )}
     >
-      <div className="container flex h-14 items-center justify-between gap-4">
-        <Link href="/" className="shrink-0 font-bold text-xl tracking-tight">
+      <div className="container flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="ml-2 shrink-0 font-bold text-xl tracking-tight sm:ml-4">
           AidLink
         </Link>
         <nav

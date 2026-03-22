@@ -35,17 +35,17 @@ export function IncidentDrawer({
   return (
     <div
       className={cn(
-        "fixed right-0 top-0 h-full w-full max-w-md bg-background border-l shadow-xl z-40 overflow-y-auto",
+        "fixed right-0 top-0 z-40 flex h-full w-full max-w-md flex-col overflow-y-auto border-l bg-gradient-to-b from-background to-muted/20 shadow-2xl",
         "animate-in slide-in-from-right duration-200"
       )}
     >
-      <div className="sticky top-0 bg-background border-b p-4 flex items-center justify-between">
-        <h2 className="font-semibold text-lg truncate pr-2">{incident.title}</h2>
-        <Button variant="ghost" size="icon" onClick={onClose}>
+      <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b bg-background/95 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <h2 className="truncate text-lg font-semibold">{incident.title}</h2>
+        <Button variant="ghost" size="icon" onClick={onClose} className="shrink-0" aria-label="Close">
           <X className="h-4 w-4" />
         </Button>
       </div>
-      <div className="p-4 space-y-4">
+      <div className="space-y-5 p-5">
         <div className="flex flex-wrap gap-2">
           <VerificationBadge status={incident.verificationStatus} />
           <SeverityBadge score={incident.severityScore} />
@@ -78,26 +78,22 @@ export function IncidentDrawer({
           </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-2 text-sm">
-          <div className="rounded-lg border p-3">
+        <div className="grid grid-cols-2 gap-3 text-sm">
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">Injuries (reported est.)</p>
-            <p className="font-semibold">{incident.injuriesReported ?? 0}</p>
+            <p className="text-lg font-semibold">{incident.injuriesReported ?? 0}</p>
           </div>
-          <div className="rounded-lg border p-3">
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
             <p className="text-muted-foreground">Volunteers Needed</p>
-            <p className="font-semibold">{incident.volunteersNeeded}</p>
+            <p className="text-lg font-semibold">{incident.volunteersNeeded}</p>
           </div>
-          <div className="rounded-lg border p-3">
-            <p className="text-muted-foreground">Confirmed</p>
-            <p className="font-semibold">{confirmedCount}</p>
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
+            <p className="text-muted-foreground">Confirmed Volunteers</p>
+            <p className="text-lg font-semibold">{confirmedCount}</p>
           </div>
-          <div className="rounded-lg border p-3">
-            <p className="text-muted-foreground">Checked In</p>
-            <p className="font-semibold">{checkedInCount}</p>
-          </div>
-          <div className="rounded-lg border p-3 col-span-2">
-            <p className="text-muted-foreground">Interested</p>
-            <p className="font-semibold">{interestedCount}</p>
+          <div className="rounded-xl border bg-muted/30 p-4 shadow-sm">
+            <p className="text-muted-foreground">Missing People</p>
+            <p className="text-lg font-semibold">{interestedCount}</p>
           </div>
         </div>
 

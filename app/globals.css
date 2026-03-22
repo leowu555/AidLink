@@ -68,3 +68,12 @@
   background: none !important;
   border: none !important;
 }
+
+/* Zone hover tooltip styling */
+.zone-tooltip.leaflet-tooltip {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid hsl(var(--border));
+  font-size: 0.875rem;
+}
