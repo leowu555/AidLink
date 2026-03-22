@@ -4,7 +4,7 @@
     "region": "iran",
     "summary": "The Fars provincial police headquarters, a multi-story building in Shiraz, sustained heavy damage and structural collapse following US-Israeli airstrikes.",
     "time_of_incident": "2026-03-21T21:11:52.000Z",
-    "time_since_incident": "18.9h",
+    "time_since_incident": "16.6h",
     "criticality": "critical",
     "location_centre": {
       "lat": 29.5918,
@@ -34,7 +34,7 @@
     "region": "iran",
     "summary": "Rescue teams, including specialized rubble units and search dogs, successfully extracted one person alive from under rubble on the fourth floor of a residential building in Tehran.",
     "time_of_incident": "2026-03-19T09:07:10.000Z",
-    "time_since_incident": "78.9h",
+    "time_since_incident": "76.7h",
     "criticality": "cleanup",
     "location_centre": {
       "lat": 35.6892,
@@ -60,7 +60,7 @@
     "region": "iran",
     "summary": "Iran's Red Crescent Society is actively recovering the bodies of a mother and infant from under rubble following an unspecified incident.",
     "time_of_incident": "2026-03-22T11:03:34.000Z",
-    "time_since_incident": "5.0h",
+    "time_since_incident": "2.7h",
     "location_centre": {
       "lat": 32.4,
       "lon": 53.7
@@ -95,33 +95,30 @@
     "region": "iran",
     "summary": "Red Crescent teams are actively clearing rubble in Tabriz, with reports indicating people may be trapped underneath.",
     "time_of_incident": "2026-03-22T13:03:26.000Z",
-    "time_since_incident": "3.0h",
+    "time_since_incident": "0.7h",
     "location_centre": {
       "lat": 38.0805,
       "lon": 46.2878
     },
-    "location_radius_km": 5.0,
+    "location_radius_km": 1.0,
     "location_source": "gemini",
-    "casualties_estimate": 1,
+    "casualties_estimate": 0,
     "casualties": "few",
     "casualties_source": "gemini",
-    "manpower_needed_estimate": 0,
-    "manpower_needed": "small",
+    "manpower_needed_estimate": 5,
+    "manpower_needed": "moderate",
     "manpower_source": "gemini",
     "verification": "initial_reports",
     "posts": [
-      "https://x.com/elrick111/status/2035703903493206208",
-      "https://x.com/bisimchi88/status/2035743885658357975"
+      "https://x.com/elrick111/status/2035703903493206208"
     ],
     "media": [],
-    "last_updated": "2026-03-22T16:03:24.088528",
+    "last_updated": "2026-03-22T13:48:03.283854",
     "time_source": "post_timestamp",
     "criticality": "critical",
     "criticality_reason": "Active rescue operations by Red Crescent are underway, with unconfirmed reports of people trapped under rubble.",
-    "confidence": "confident",
-    "confidence_score": 0.8,
-    "confidence_reason": "A specific city (Tabriz) and emergency service (Red Crescent) are mentioned with ongoing rubble clearing activities, indicating a discrete incident.",
-    "criticality_source": "gemini",
-    "confidence_source": "gemini"
+    "confidence": "likely",
+    "confidence_score": 0.6,
+    "confidence_reason": "A specific city (Tabriz) and emergency service (Red Crescent) are mentioned with ongoing rubble clearing activities, indicating a discrete incident."
   }
 ]

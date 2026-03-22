@@ -28,6 +28,7 @@ INTERVAL_SECONDS = INTERVAL_MINUTES * 60
 # Path to your scripts — assumes scheduler.py is in the same directory
 BASE_DIR     = os.path.dirname(os.path.abspath(__file__))
 SCRAPER      = os.path.join(BASE_DIR, "test_pipeline.py")
+UPLOADER     = os.path.join(BASE_DIR, "upload_to_supabase.py")
 ANALYST      = os.path.join(BASE_DIR, "analyst.py")
 PYTHON       = sys.executable
 
@@ -82,19 +83,29 @@ def restart_analyst():
 
 
 async def run_cycle():
-    """One full cycle: scrape → analyse."""
     log(f"{'═' * 50}")
     log(f"⏰ Starting scheduled cycle")
     log(f"{'═' * 50}")
 
     scraper_ok = run_scraper()
 
-    if scraper_ok:
-        log("🤖 Triggering analysis pipeline...")
-        restart_analyst()
-    else:
-        log("⚠️  Scraper had issues — still triggering analyst on existing data")
-        restart_analyst()
+    # upload fresh JSONs to Supabase regardless of scraper status
+    log("📤 Uploading incidents to Supabase...")
+    try:
+        result = subprocess.run(
+            [PYTHON, UPLOADER],
+            cwd=BASE_DIR,
+            timeout=120,
+        )
+        if result.returncode == 0:
+            log("✅ Upload complete")
+        else:
+            log(f"⚠️  Upload exited with code {result.returncode}")
+    except Exception as e:
+        log(f"❌ Upload failed: {e}")
+
+    log("🤖 Triggering analysis pipeline...")
+    restart_analyst()
 
     log(f"✅ Cycle complete. Next run in {INTERVAL_MINUTES} minutes.")
 

@@ -4,7 +4,7 @@
     "region": "ukraine",
     "summary": "Rescuers in Sumy were targeted by a secondary enemy strike while assessing damage from a previous impact, though no new casualties were reported from this specific incident.",
     "time_of_incident": "2026-03-22T06:34:21.000Z",
-    "time_since_incident": "9.6h",
+    "time_since_incident": "7.3h",
     "criticality": "critical",
     "location_centre": {
       "lat": 50.9,
@@ -20,16 +20,15 @@
     "manpower_source": "gemini",
     "verification": "verified",
     "posts": [
+      "https://x.com/obozrevatel_ua/status/2035642387389956448",
       "https://x.com/korkinoleh/status/2035628343299555644",
-      "https://x.com/ukrpravda_news/status/2035612385109508131",
-      "https://x.com/prm_ua/status/2035605986782642290",
       "https://x.com/kyiv_tv/status/2035632853363441742",
       "https://x.com/UKRINFORM/status/2035616763870691669",
-      "https://x.com/IRTA_FAX/status/2035747397167436213",
-      "https://x.com/pogrebeckij/status/2035639937345716566",
+      "https://x.com/prm_ua/status/2035605986782642290",
+      "https://x.com/Novynarnia/status/2035634569429332108",
+      "https://x.com/ukrpravda_news/status/2035612385109508131",
       "https://x.com/glavnoe_ua/status/2035621806502248873",
-      "https://x.com/obozrevatel_ua/status/2035642387389956448",
-      "https://x.com/Novynarnia/status/2035634569429332108"
+      "https://x.com/pogrebeckij/status/2035639937345716566"
     ],
     "media": [
       {
@@ -67,24 +66,20 @@
       {
         "type": "image",
         "url": "https://pbs.twimg.com/media/HD_yrEqWAAAB85L?format=png&name=small"
-      },
-      {
-        "type": "image",
-        "url": "https://pbs.twimg.com/media/HEBteELXgAEuMY0?format=jpg&name=small"
       }
     ],
-    "last_updated": "2026-03-22T16:11:37.024413",
+    "last_updated": "2026-03-22T13:54:34.147191",
     "criticality_source": "gemini",
     "confidence": "confident",
     "confidence_source": "gemini",
-    "confidence_score": 0.9
+    "confidence_score": 0.8
   },
   {
     "incident_id": "df90821e-efbd-486f-979d-f784f6843f2c",
     "region": "ukraine",
     "summary": "Five people, including two children, were injured, and private houses and infrastructure were damaged in an attack on Nikopol, Dnipropetrovsk Oblast.",
     "time_of_incident": "2026-03-22T05:34:11.000Z",
-    "time_since_incident": "10.6h",
+    "time_since_incident": "8.3h",
     "criticality": "critical",
     "location_centre": {
       "lat": 47.57,
@@ -131,7 +126,7 @@
     "region": "ukraine",
     "summary": "Two men were killed in an attack in Synelnykove Raion, Dnipropetrovsk Oblast.",
     "time_of_incident": "2026-03-22T05:34:11.000Z",
-    "time_since_incident": "10.6h",
+    "time_since_incident": "8.3h",
     "criticality": "critical",
     "location_centre": {
       "lat": 48.3,
@@ -178,7 +173,7 @@
     "region": "ukraine",
     "summary": "Two soldiers of the 47th Separate Mechanized Brigade, 'Chak' and 'Sych', were trapped under rubble in a collapsed dugout for 4 days after an FPV drone strike on the Northern-Slobozhansky direction, with at least one confirmed rescued.",
     "time_of_incident": "2026-03-20T15:09:26.000Z",
-    "time_since_incident": "49.0h",
+    "time_since_incident": "46.8h",
     "criticality": "needs_support",
     "location_centre": {
       "lat": 48.5,
@@ -211,7 +206,7 @@
     "region": "ukraine",
     "summary": "A drone attacked the main SBU office in Lviv Oblast, causing damage to the building.",
     "time_of_incident": "2026-03-19T06:22:00.000Z",
-    "time_since_incident": "81.8h",
+    "time_since_incident": "79.5h",
     "criticality": "cleanup",
     "location_centre": {
       "lat": 49.84,
@@ -246,7 +241,7 @@
     "region": "ukraine",
     "summary": "Three people were injured and two multi-story buildings were damaged in Odesa following an attack.",
     "time_of_incident": "2026-03-19T06:22:00.000Z",
-    "time_since_incident": "81.8h",
+    "time_since_incident": "79.5h",
     "criticality": "cleanup",
     "location_centre": {
       "lat": 46.48,
@@ -281,7 +276,7 @@
     "region": "ukraine",
     "summary": "Rescuers in Druzhkivka successfully saved a resident from a multi-story building after an attack.",
     "time_of_incident": "2026-03-21T09:23:55.000Z",
-    "time_since_incident": "30.8h",
+    "time_since_incident": "28.5h",
     "criticality": "needs_support",
     "location_centre": {
       "lat": 48.62,
@@ -312,7 +307,7 @@
     "region": "ukraine",
     "summary": "Russians hit a critical infrastructure facility in Zaporizhzhia's Khortytskyi district with two Shahed drones, causing a fire which rescuers quickly extinguished, and blowing out windows in nearby infrastructure; drone debris also fell in a yard in Zaporizhzhia.",
     "time_of_incident": "2026-03-21T16:28:25.000Z",
-    "time_since_incident": "23.7h",
+    "time_since_incident": "21.4h",
     "location_centre": {
       "lat": 47.83,
       "lon": 35.17
@@ -351,7 +346,7 @@
     "region": "ukraine",
     "summary": "A fire broke out in a non-residential building in central Kherson due to an enemy drone hit, which rescuers quickly extinguished, with no casualties reported according to the State Emergency Service.",
     "time_of_incident": "2026-03-21T17:36:56.000Z",
-    "time_since_incident": "22.6h",
+    "time_since_incident": "20.3h",
     "location_centre": {
       "lat": 46.63,
       "lon": 32.61
@@ -395,7 +390,7 @@
     "region": "ukraine",
     "summary": "Rescuers extinguished a number of fires in Sloviansk and Kramatorsk, Donetsk Oblast, following enemy shelling.",
     "time_of_incident": "2026-03-21T12:12:02.000Z",
-    "time_since_incident": "28.0h",
+    "time_since_incident": "25.7h",
     "location_centre": {
       "lat": 48.79,
       "lon": 37.585
@@ -430,7 +425,7 @@
     "region": "ukraine",
     "summary": "Rescuers and medics attempted to resuscitate a man at a fire site in Sumy.",
     "time_of_incident": "2026-03-21T10:30:42.000Z",
-    "time_since_incident": "29.7h",
+    "time_since_incident": "27.4h",
     "location_centre": {
       "lat": 50.9,
       "lon": 34.78
@@ -461,7 +456,7 @@
     "region": "ukraine",
     "summary": "A non-residential building in Bilozirka village, Kherson Raion, caught fire following an enemy artillery strike yesterday evening, which rescuers extinguished, working under risk of repeat attacks, with no casualties.",
     "time_of_incident": "2026-03-20T18:00:00.000Z",
-    "time_since_incident": "46.2h",
+    "time_since_incident": "43.9h",
     "location_centre": {
       "lat": 46.68,
       "lon": 32.55
@@ -509,7 +504,7 @@
     "region": "ukraine",
     "summary": "In Nikopol, Dnipropetrovsk Oblast, five people were injured, including two children (ages 7 and 18), two women, and one man, with rescuers providing first aid to one woman and transporting her to the hospital. Private houses and infrastructure were damaged in the attack.",
     "time_of_incident": "2026-03-22T05:34:11.000Z",
-    "time_since_incident": "10.6h",
+    "time_since_incident": "8.3h",
     "location_centre": {
       "lat": 47.57,
       "lon": 34.38
@@ -557,7 +552,7 @@
     "region": "ukraine",
     "summary": "Five people, including two children (ages 7 and 18), two women, and one man, were injured, with rescuers providing first aid to one woman and transporting her to the hospital; private houses and infrastructure were damaged in an attack on Nikopol, Dnipropetrovsk Oblast.",
     "time_of_incident": "2026-03-22T05:34:11.000Z",
-    "time_since_incident": "10.6h",
+    "time_since_incident": "8.3h",
     "location_centre": {
       "lat": 47.57,
       "lon": 34.38
@@ -605,7 +600,7 @@
     "region": "ukraine",
     "summary": "Rescuers extinguished a fire in an apartment on Nechuya-Levytskyi street in Lviv, with no casualties reported.",
     "time_of_incident": "2026-03-22T05:59:00.000Z",
-    "time_since_incident": "10.2h",
+    "time_since_incident": "7.9h",
     "location_centre": {
       "lat": 49.84,
       "lon": 24.03
@@ -636,7 +631,7 @@
     "region": "ukraine",
     "summary": "Rescuers in Shepetivka, Khmelnytskyi Oblast, extinguished a fire involving dry vegetation.",
     "time_of_incident": "2026-03-22T11:39:47.000Z",
-    "time_since_incident": "4.5h",
+    "time_since_incident": "2.2h",
     "location_centre": {
       "lat": 49.48,
       "lon": 27.06
@@ -672,7 +667,7 @@
     "region": "ukraine",
     "summary": "Rescuers extinguished fires in Kramatorsk and Druzhkivka, Donetsk Oblast, following shelling, with firefighting efforts lasting over four hours.",
     "time_of_incident": "2026-03-22T09:38:06.000Z",
-    "time_since_incident": "6.6h",
+    "time_since_incident": "4.3h",
     "location_centre": {
       "lat": 48.675,
       "lon": 37.555
@@ -697,54 +692,5 @@
     "confidence": "likely",
     "confidence_score": 0.7,
     "confidence_reason": "A local news outlet reports specific locations, actions by rescuers, and duration of firefighting, indicating a discrete event."
-  },
-  {
-    "incident_id": "eae2bbba-4e79-4d86-abc6-41974d9af21f",
-    "region": "ukraine",
-    "summary": "A large-scale fire broke out in a warehouse building in Brovary district near Kyiv, with Kyiv rescuers involved in extinguishing it and residents advised to close windows due to smoke.",
-    "time_of_incident": "2026-03-22T15:10:12.000Z",
-    "time_since_incident": "1.0h",
-    "location_centre": {
-      "lat": 50.48,
-      "lon": 30.78
-    },
-    "location_radius_km": 15.0,
-    "location_source": "gemini",
-    "casualties_estimate": 0,
-    "casualties": "few",
-    "casualties_source": "gemini",
-    "manpower_needed_estimate": 10,
-    "manpower_needed": "moderate",
-    "manpower_source": "gemini",
-    "verification": "initial_reports",
-    "posts": [
-      "https://x.com/censor_net/status/2035738391770222623",
-      "https://x.com/hWLpKOhua6U0PAU/status/2035735803922424016"
-    ],
-    "media": [
-      {
-        "type": "image",
-        "url": "https://pbs.twimg.com/media/HEBhgWubgAAzAlr?format=jpg&name=360x360"
-      },
-      {
-        "type": "image",
-        "url": "https://pbs.twimg.com/media/HEBhgWdW8AIbZIi?format=jpg&name=360x360"
-      },
-      {
-        "type": "image",
-        "url": "https://pbs.twimg.com/media/HEBiMgFWIAAPJAN?format=small"
-      },
-      {
-        "type": "image",
-        "url": "https://pbs.twimg.com/media/HEBiPyJakAAv52N?format=small"
-      }
-    ],
-    "last_updated": "2026-03-22T16:11:37.024666",
-    "time_source": "post_timestamp",
-    "criticality": "critical",
-    "criticality_reason": "The tweet describes an ongoing large-scale fire requiring active rescue (firefighting) and recommends protective measures for residents, indicating an active emergency.",
-    "confidence": "likely",
-    "confidence_score": 0.7,
-    "confidence_reason": "Multiple tweets describe a large fire in a warehouse in Brovary district, near Kyiv, confirming the location and type of incident, with visuals of black smoke."
   }
 ]
