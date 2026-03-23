@@ -1,30 +1,41 @@
-# AidLink — Crisis Response Coordination Platform
+# 🚨 AidLink — Crisis Response Coordination Platform
+
+## 🏆 Awards — ProduHacks 2026
+
+> 🥇 **1st Place — Best Use of [Fetch AI](https://fetch.ai)** \
+> $400 CAD prize + Guaranteed Interviews
+>
+> 🥈 **2nd Place — Most Likely to Become a Startup** \
+> Guaranteed Admission to Spring VC's Build Accelerator Cohort + LMS Access
+>
+>  🔗 **[View on Devpost](https://devpost.com/software/aidlink-p4327y)**
+---
 
 AidLink is a real-time crisis coordination platform that monitors X (Twitter) for structural collapse reports in active conflict zones, verifies them using a multi-agent AI pipeline, and surfaces actionable incident data to local response coordinators. Built at ProduHacks 2026.
 
-## How It Works
+## ⚙️ How It Works
 
-1. **Scraper** — Playwright scrapes X every hour using Gemini-generated search queries in Arabic, Ukrainian, Farsi, and English. Gemini filters noise, clusters tweets into discrete incidents, and extracts location, casualty estimates, and criticality.
+1. **🔍 Scraper** — Playwright scrapes X every hour using Gemini-generated search queries in Arabic, Ukrainian, Farsi, and English. Gemini filters noise, clusters tweets into discrete incidents, and extracts location, casualty estimates, and criticality.
 
-2. **Upload** — Fresh incidents are upserted to Supabase (PostgreSQL), preserving full timestamped history.
+2. **📤 Upload** — Fresh incidents are upserted to Supabase (PostgreSQL), preserving full timestamped history.
 
-3. **Fetch.ai Agent Pipeline** — Three uAgents registered on Agentverse run automatically after each scrape:
+3. **🤖 Fetch.ai Agent Pipeline** — Three uAgents registered on Agentverse run automatically after each scrape:
    - **Analyst Agent** — fetches post content and scores each incident for reliability using ASI:One
    - **Critic Agent** — independently challenges the analyst's verdict; produces a `confirmed`, `disputed`, or `unreliable` final verdict
    - **Coordinator Agent** — synthesises all verdicts into a per-region resource allocation brief
 
-4. **Frontend** — Coordinators see a live map of verified incidents with criticality tiers, casualty estimates, manpower needs, and AI-generated deployment recommendations.
+4. **🗺️ Frontend** — Coordinators see a live map of verified incidents with criticality tiers, casualty estimates, manpower needs, and AI-generated deployment recommendations.
 
-## Features
+## ✨ Features
 
-- **Live crisis map** — Leaflet map with Gaza and Ukraine views, incident markers color-coded by criticality, and an open incidents panel
-- **Incident drawer** — Full incident detail: reliability verdict, analyst/critic scores, casualty and manpower estimates, source posts, and media
-- **Organizer dashboard** — Verify incidents, assign volunteers, advance assignment statuses, check-in modal, and resolve incidents
-- **AI reliability scoring** — Every incident gets an independent analyst + critic score; disputed or unreliable incidents are flagged, not hidden
-- **Regional allocation briefs** — Coordinator agent produces a per-region summary: overall state, priority incident ordering, concrete resource recommendations, and external support needs
-- **Hourly automation** — Scheduler runs scrape → upload → analysis pipeline automatically
+- **🗺️ Live crisis map** — Leaflet map with Gaza and Ukraine views, incident markers color-coded by criticality, and an open incidents panel
+- **📋 Incident drawer** — Full incident detail: reliability verdict, analyst/critic scores, casualty and manpower estimates, source posts, and media
+- **🧑‍💼 Organizer dashboard** — Verify incidents, assign volunteers, advance assignment statuses, check-in modal, and resolve incidents
+- **🔎 AI reliability scoring** — Every incident gets an independent analyst + critic score; disputed or unreliable incidents are flagged, not hidden
+- **📊 Regional allocation briefs** — Coordinator agent produces a per-region summary: overall state, priority incident ordering, concrete resource recommendations, and external support needs
+- **⏰ Hourly automation** — Scheduler runs scrape → upload → analysis pipeline automatically
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 **Frontend**
 - Next.js 14 (App Router)
@@ -44,7 +55,7 @@ AidLink is a real-time crisis coordination platform that monitors X (Twitter) fo
 - ASI:One / asi1-mini (analyst and critic LLM)
 - Supabase (PostgreSQL — incidents, analyses, region reports)
 
-## Setup
+## 🚀 Setup
 
 ### Frontend
 
@@ -69,6 +80,19 @@ Open [http://localhost:3000](http://localhost:3000).
 pip install playwright uagents uagents-core openai supabase google-genai python-dotenv httpx
 playwright install chromium
 ```
+
+### 🍪 X (Twitter) Authentication
+
+The scraper uses your X session cookies to access search results. Run the cookie saver once before your first scrape:
+```bash
+python save_cookies.py
+```
+
+This opens a Chromium browser window. Log into X manually, then close the browser. Your session is saved to `x_cookies.json` and reused automatically by the scraper.
+
+If you have a second X account added to the same browser session, the scraper will automatically attempt to switch to it if a page fails to load — reducing the chance of rate limiting mid-scrape.
+
+> ⚠️ Cookies expire periodically — if the scraper logs show `❌ Cookies expired`, log out of X and re-run `save_cookies.py`.
 
 Create a `.env` file:
 
@@ -101,7 +125,7 @@ Run the Supabase schema files in order via the SQL editor:
 1. `supabase_schema.sql`
 2. `supabase_agents_schema.sql`
 
-### Running the Pipeline
+### ▶️ Running the Pipeline
 
 Start the two persistent agents:
 
@@ -122,7 +146,7 @@ python scheduler.py
 
 The scheduler runs `main.py` (scrape) → `upload_to_supabase.py` (sync) → restarts `analyst.py` (analysis pipeline) every hour.
 
-### First-Time Agent Setup
+### 🔌 First-Time Agent Setup
 
 On first run, each agent prints its address:
 ```
@@ -131,14 +155,14 @@ INFO: Analyst agent address: agent1q...
 
 Copy each address into `.env`, then click the inspector link printed in each terminal → Connect → Mailbox to register on Agentverse. Restart all agents once addresses are set.
 
-## Demo Flow
+## 🎬 Demo Flow
 
 1. **Landing** → **View Crisis Map** or **Organizer Dashboard**
 2. **Public map** → Switch between Gaza and Ukraine views → Click a marker → Read reliability verdict, casualty estimates, source posts
 3. **Organizer** → Log in as Organizer (demo) → Select incident → Verify, edit, assign volunteers, check in, or resolve
 4. **Incident detail** → `/map/incident/[id]` → Time urgency tier, situation summary, inbound reports
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 app/
@@ -169,10 +193,10 @@ prisma/
   seed.ts
 ```
 
-## Safety Notice
+## ⚠️ Safety Notice
 
 Assignments should be reviewed by qualified coordinators. Do not enter unsafe zones without authorization or proper training.
 
-## Team
+## 👥 Team
 
 Built by Jasper He, Leo Wu, Ethan Hoang, Daniel Zou — ProduHacks 2026
