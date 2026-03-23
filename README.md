@@ -3,7 +3,7 @@
 ## 🏆 Awards — ProduHacks 2026
 
 > 🥇 **1st Place — Best Use of [Fetch AI](https://fetch.ai)** \
-> $400 CAD prize + Guaranteed Interviews
+> $400 CAD prize + Guaranteed Internship Interviews
 >
 > 🥈 **2nd Place — Most Likely to Become a Startup** \
 > Guaranteed Admission to Spring VC's Build Accelerator Cohort + LMS Access
