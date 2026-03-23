@@ -1,14 +1,15 @@
 # 🚨 AidLink — Crisis Response Coordination Platform
 
+🔗 **[View on Devpost](https://devpost.com/software/aidlink-p4327y)**
+
 ## 🏆 Awards — ProduHacks 2026
 
-> 🥇 **1st Place — Best Use of [Fetch AI](https://fetch.ai)** \
-> $400 CAD prize + Guaranteed Internship Interviews
->
-> 🥈 **2nd Place — Most Likely to Become a Startup** \
-> Guaranteed Admission to Spring VC's Build Accelerator Cohort + LMS Access
->
->  🔗 **[View on Devpost](https://devpost.com/software/aidlink-p4327y)**
+### 🥇 **1st Place — Best Use of [Fetch AI](https://fetch.ai)**
+$400 CAD prize + Guaranteed Internship Interviews
+
+### 🥈 **2nd Place — Most Likely to Become a Startup**
+Guaranteed Admission to Spring VC's Build Accelerator Cohort + LMS Access
+
 ---
 
 AidLink is a real-time crisis coordination platform that monitors X (Twitter) for structural collapse reports in active conflict zones, verifies them using a multi-agent AI pipeline, and surfaces actionable incident data to local response coordinators. Built at ProduHacks 2026.
