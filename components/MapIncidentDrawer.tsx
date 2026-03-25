@@ -112,6 +112,9 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
   );
   const [isSaving, setIsSaving] = useState(false);
 
+  // Reset drafts only when the user selects a different incident. The map polls/refetches
+  // often; if we keyed this on `incident`, every new object from the server would overwrite
+  // in-progress edits (e.g. criticality) before "Save all changes".
   useEffect(() => {
     setSummaryDraft(incident.summary ?? "");
     setReportedAtDraft(incident.reportedAt ? new Date(incident.reportedAt).toISOString().slice(0, 16) : "");
@@ -124,7 +127,8 @@ export function MapIncidentDrawer({ incident, onClose, onRemove, onSummarySave, 
     setManpowerCatDraft(incident.manpowerCategory);
     setCriticalityDraft(normalizeCriticality(incident.criticality));
     setVerificationDraft(normalizeVerification(incident.verification));
-  }, [incident]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: only on incident id change
+  }, [incident.id]);
 
   const saveAll = useCallback(async () => {
     if (!onUpdate) return;
